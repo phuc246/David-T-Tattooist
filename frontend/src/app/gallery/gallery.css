@@ -1,0 +1,32 @@
+/* Gallery Typography Styles */
+.vertical-text-left {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(-90deg);
+}
+
+.vertical-text-right {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.typography-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16rem;
+}
+
+/* Ensure vertical headings are positioned correctly and do not overlap grid */
+.typography-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16rem;
+}
+
+.vertical-text-left h2, .vertical-text-right h2 {
+  margin: 0;
+  line-height: 1;
+  transform-origin: center;
+}

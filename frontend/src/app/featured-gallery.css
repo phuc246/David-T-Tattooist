@@ -1,0 +1,79 @@
+.vertical-divider {
+  width: 4px;
+  height: 32px;
+  background-color: #000000;
+}
+
+html.dark .vertical-divider {
+  background-color: #ffffff;
+}
+
+/* Vertical label columns for gallery sides */
+.gallery-vertical {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  pointer-events: none;
+}
+
+.left-vertical {
+  left: 0;
+  align-items: center;
+}
+
+.right-vertical {
+  right: 0;
+  align-items: center;
+}
+
+.vertical-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: clamp(18px, 3vw, 32px);
+  font-weight: 300;
+  letter-spacing: 6px;
+  color: #000;
+  opacity: 0.9;
+  text-transform: uppercase;
+  display: block;
+}
+
+.vertical-divider-sm {
+  width: 2px;
+  height: 36px;
+  background: #000;
+  opacity: 0.6;
+  margin: 0.6rem 0;
+}
+
+/* Center container that keeps the grid away from the vertical labels */
+.center-grid-container {
+  width: calc(100% - 260px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Ensure flex layout for gallery sections only (avoid affecting home) */
+section.min-h-\\[600px\\] > div.relative {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dark mode adjustments */
+html.dark .vertical-label {
+  color: #fff;
+}
+
+html.dark .vertical-divider-sm {
+  background: #fff;
+}
