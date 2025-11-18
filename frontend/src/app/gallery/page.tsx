@@ -287,101 +287,7 @@ export default function GalleryPage() {
       {/* Featured Gallery Section - Full Width Product Collection */}
       <section className="w-full bg-white py-12 px-0 relative">
         <div className="w-full">
-          <h1 className="text-5xl font-bold mb-8 text-center text-black py-8">Bộ Sưu Tập Sản Phẩm</h1>
-          
-          {/* Stats Section */}
-          <div className="max-w-7xl mx-auto px-4 mb-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <div className="text-3xl font-bold text-black">{filtered.length}</div>
-                <div className="text-sm text-gray-600 mt-1">Designs Shown</div>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <div className="text-3xl font-bold text-black">
-                  {[...new Set(filtered.map((p: any) => p.style))].length}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Styles</div>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <div className="text-3xl font-bold text-black">
-                  {filtered.filter((p: any) => p.type === 'BlackWhite').length}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Black &amp; White</div>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <div className="text-3xl font-bold text-black">
-                  {filtered.filter((p: any) => p.type === 'Color').length}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Color Designs</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Search and Filter Bar */}
-          <div className="max-w-7xl mx-auto px-4 mb-8">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              {/* Search Bar */}
-              <div className="flex-1 w-full md:max-w-md">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search designs..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 py-3 pl-12 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black text-black bg-white placeholder-gray-400"
-                  />
-                  <svg 
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Sort and View Controls */}
-              <div className="flex gap-4 items-center">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black/50 text-black bg-white"
-                >
-                  <option value="newest">Newest First</option>
-                  <option value="oldest">Oldest First</option>
-                  <option value="name">Name A-Z</option>
-                </select>
-                
-                <div className="flex border-2 border-black rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`px-4 py-3 transition ${
-                      viewMode === 'grid' 
-                        ? 'bg-black text-white' 
-                        : 'bg-white text-black hover:bg-gray-100'
-                    }`}
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => setViewMode('masonry')}
-                    className={`px-4 py-3 transition ${
-                      viewMode === 'masonry' 
-                        ? 'bg-black text-white' 
-                        : 'bg-white text-black hover:bg-gray-100'
-                    }`}
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V4zM8 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H9a1 1 0 01-1-1V4zM15 3a1 1 0 00-1 1v12a1 1 0 001 1h2a1 1 0 001-1V4a1 1 0 00-1-1h-2z" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h1 className="text-5xl font-bold mb-12 text-center text-black py-8">Bộ Sưu Tập Sản Phẩm</h1>
 
           {/* Tab bar - Filter */}
           <div className="flex justify-center gap-4 mb-12 flex-wrap px-4">
@@ -427,16 +333,16 @@ export default function GalleryPage() {
             </div>
           ) : (
             <>
-              <div className={`w-full grid gap-0 ${
+              <div className={`w-full grid gap-4 px-4 max-w-7xl mx-auto ${
                 viewMode === 'grid' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
                   : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
               }`}>
                 {filtered.map((product: any, idx: number) => (
                   <div
                     key={product._id || product.id}
                     onClick={() => setSelectedProduct(product)}
-                    className={`group relative overflow-hidden cursor-pointer ${
+                    className={`group relative overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-black transition ${
                       viewMode === 'grid' 
                         ? 'h-[500px] sm:h-[600px] lg:h-[700px]' 
                         : idx % 7 === 0 || idx % 7 === 3 

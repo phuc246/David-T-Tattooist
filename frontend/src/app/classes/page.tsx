@@ -48,7 +48,6 @@ export default function ClassesPage() {
     {
       title: 'Beginner Class',
       duration: '4 weeks',
-      price: '$500',
       description: 'Learn the basics of tattooing including equipment, safety, and design fundamentals.',
       features: ['Equipment basics', 'Safety protocols', 'Design fundamentals', 'Hands-on practice'],
       image: '/img/class.mp4',
@@ -57,7 +56,6 @@ export default function ClassesPage() {
     {
       title: 'Intermediate Class',
       duration: '8 weeks',
-      price: '$900',
       description: 'Master advanced techniques, color theory, and specialized tattoo styles.',
       features: ['Advanced techniques', 'Color theory', 'Style specialization', 'Portfolio building'],
       image: '/img/all1.jpg',
@@ -66,7 +64,6 @@ export default function ClassesPage() {
     {
       title: 'Professional Certification',
       duration: '12 weeks',
-      price: '$1,500',
       description: 'Become a certified tattoo artist with complete training and real-world experience.',
       features: ['Complete certification', 'Real-world experience', 'Business skills', 'Mentorship program'],
       image: '/img/all2.jpg',
@@ -192,7 +189,6 @@ export default function ClassesPage() {
                     </ul>
                     
                     <div className="flex items-center justify-between mb-6">
-                      <span className="text-4xl font-bold">{course.price}</span>
                       <button className="px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-black rounded-lg font-semibold transition">
                         Enroll Now
                       </button>

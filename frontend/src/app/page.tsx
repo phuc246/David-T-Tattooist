@@ -61,23 +61,14 @@ export default function Home() {
     const handleScroll = () => {
       setScrollY(window.scrollY)
       
-      // Move logo to nav when scrolled
+      // Move logo to nav when scrolled - REMOVED, logo should not appear on navbar
       const heroLogo = document.getElementById('hero-logo')
-      const logoMover = document.getElementById('logo-mover')
       
-      if (heroLogo && logoMover && scrollY > 100) {
-        const progress = Math.min((scrollY - 100) / 300, 1)
-        
-        if (progress >= 1) {
-          heroLogo.style.opacity = '0'
-          logoMover.style.opacity = '1'
-        } else {
-          heroLogo.style.opacity = String(1 - progress)
-          logoMover.style.opacity = '0'
-        }
-      } else if (heroLogo && logoMover) {
+      if (heroLogo && scrollY > 100) {
+        // Just hide the hero logo, don't move it to navbar
+        heroLogo.style.opacity = String(Math.max(0, 1 - (scrollY - 100) / 500))
+      } else if (heroLogo) {
         heroLogo.style.opacity = '1'
-        logoMover.style.opacity = '0'
       }
     }
     
@@ -148,9 +139,7 @@ export default function Home() {
             id="hero-logo"
             className="w-32 h-auto transition-all duration-1000"
             style={{
-              transform: scrollY > 100 
-                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})` 
-                : 'none',
+              transform: 'none',
               opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
             }}
           />
@@ -315,6 +304,48 @@ export default function Home() {
             >
               View All Designs
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Quy Trình Làm Việc Section */}
+      <section className="py-20 px-4 bg-white scroll-section">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-center text-black scroll-reveal">Quy Trình Làm Việc</h2>
+          <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto scroll-reveal">
+            Bạn có thể xem hình ảnh lên bất cứ bộ phận nào của cơ thể, dù đó là nơi để nhìn thấy hay ẩn đi, xong bạn nên hiểu hình xăm gì, ở dâu..., rất quan trọng. 
+            Hãy để chúng tôi giúp bạn để lựa chọn hơn theo quy trình sau:
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: '💡',
+                title: 'Ý Tưởng',
+                description: 'Bạn có ý tưởng về hình xăm bạn muốn'
+              },
+              {
+                icon: '🎨',
+                title: 'Thiết Kế',
+                description: 'Chúng tôi sẽ thiết kế và tùy chỉnh theo yêu cầu'
+              },
+              {
+                icon: '💰',
+                title: 'Báo Giá',
+                description: 'Chúng tôi sẽ báo giá chi tiết cho bạn'
+              },
+              {
+                icon: '🔧',
+                title: 'Xăm Hình',
+                description: 'Thực hiện xăm hình với chất lượng cao'
+              }
+            ].map((item, idx) => (
+              <div key={idx} className="bg-gray-50 p-8 rounded-lg border border-gray-200 text-center hover:shadow-lg transition scroll-reveal-scale" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                <div className="text-5xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-bold mb-3 text-black">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
