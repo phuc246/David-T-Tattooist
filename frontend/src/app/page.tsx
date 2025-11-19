@@ -139,7 +139,9 @@ export default function Home() {
             id="hero-logo"
             className="w-32 h-auto transition-all duration-1000"
             style={{
-              transform: 'none',
+              transform: scrollY > 100 
+                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})` 
+                : 'none',
               opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
             }}
           />
@@ -147,17 +149,18 @@ export default function Home() {
       </section>
 
       {/* Welcome Section with Image + Text - full screen */}
-      <section className="relative h-screen w-full scroll-section">
+      <section className="relative min-h-screen w-full overflow-x-hidden scroll-section flex items-center">
         <div className="absolute inset-0">
           <img src="/img/studio.jpg" alt="Tattoo Studio" className="w-full h-full object-cover scroll-reveal-scale" />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center">
+        <div className="relative z-10 w-full py-12 lg:py-0 px-4 sm:px-6 lg:px-0">
+          <div className="w-full max-w-7xl mx-auto">
           <div className="w-full grid grid-cols-1 lg:grid-cols-2">
             <div className="hidden lg:block" />
-            <div className="p-8 lg:p-16 flex items-center">
-              <div className="space-y-6 text-white">
+            <div className="flex items-center">
+              <div className="space-y-4 sm:space-y-6 text-white">
                 <h2 className="text-4xl lg:text-5xl font-bold scroll-reveal hover:scale-105 transition-transform duration-300 cursor-default">
                   Welcome to Tattoo in Saigon, Vietnam
                 </h2>
@@ -168,6 +171,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </section>
@@ -185,7 +189,7 @@ export default function Home() {
             >
               <div className={`flex flex-col lg:flex-row mb-16 gap-0 items-stretch overflow-hidden ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
                 {/* Image - Full bleed */}
-                <div className="w-full lg:w-2/3 lg:h-[500px] h-[300px] overflow-hidden flex-shrink-0">
+                <div className="w-full lg:w-2/3 lg:h-[500px] h-[300px] overflow-hidden flex-shrink-0 rounded-lg">
                   <img 
                     src={artist.image} 
                     alt={artist.name} 
@@ -308,50 +312,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quy Trình Làm Việc Section */}
-      <section className="py-20 px-4 bg-white scroll-section">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-center text-black scroll-reveal">Quy Trình Làm Việc</h2>
-          <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto scroll-reveal">
-            Bạn có thể xem hình ảnh lên bất cứ bộ phận nào của cơ thể, dù đó là nơi để nhìn thấy hay ẩn đi, xong bạn nên hiểu hình xăm gì, ở dâu..., rất quan trọng. 
-            Hãy để chúng tôi giúp bạn để lựa chọn hơn theo quy trình sau:
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: '💡',
-                title: 'Ý Tưởng',
-                description: 'Bạn có ý tưởng về hình xăm bạn muốn'
-              },
-              {
-                icon: '🎨',
-                title: 'Thiết Kế',
-                description: 'Chúng tôi sẽ thiết kế và tùy chỉnh theo yêu cầu'
-              },
-              {
-                icon: '💰',
-                title: 'Báo Giá',
-                description: 'Chúng tôi sẽ báo giá chi tiết cho bạn'
-              },
-              {
-                icon: '🔧',
-                title: 'Xăm Hình',
-                description: 'Thực hiện xăm hình với chất lượng cao'
-              }
-            ].map((item, idx) => (
-              <div key={idx} className="bg-gray-50 p-8 rounded-lg border border-gray-200 text-center hover:shadow-lg transition scroll-reveal-scale" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                <div className="text-5xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-bold mb-3 text-black">{item.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Discover Tattoo Artistry Section - full screen with booking form filling height */}
-      <section id="booking" className="relative h-screen w-full bg-black/85 scroll-section">
+      <section id="booking" className="relative min-h-screen w-full overflow-x-hidden bg-black/85 scroll-section flex items-center py-12 lg:py-0">
         <video
           autoPlay
           loop
@@ -362,27 +325,29 @@ export default function Home() {
           <source src="/img/class.mp4" type="video/mp4" />
         </video>
 
-        <div className="relative z-10 max-w-7xl mx-auto h-full flex items-stretch">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 h-full">
+        <div className="relative z-10 w-full px-4 sm:px-6 lg:px-0">
+          <div className="w-full max-w-7xl mx-auto">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0">
             {/* Left Content - vertically centered */}
-            <div className="flex items-center p-8 lg:p-16">
-              <div className="space-y-6 text-white">
-                <h2 className="text-4xl lg:text-5xl font-bold scroll-reveal-left">Discover Tattoo Artistry With Us</h2>
-                <p className="text-white-700 max-w-xl leading-relaxed scroll-reveal">
+            <div className="flex items-center lg:p-16">
+              <div className="space-y-4 sm:space-y-6 text-white">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold scroll-reveal-left">Discover Tattoo Artistry With Us</h2>
+                <p className="text-gray-200 max-w-xl leading-relaxed scroll-reveal text-sm sm:text-base">
                   Welcome to our in-depth tattoo course, where you'll gain knowledge from basic to advanced levels,
                   taught by leading artists. From drawing techniques and machine usage to safety and hygiene protocols,
                   we are committed to providing a professional and inspiring learning environment.
                 </p>
-                <p className="text-white-700 font-semibold scroll-reveal">Start your journey to becoming a true tattoo artist today!</p>
+                <p className="text-gray-200 font-semibold scroll-reveal text-sm sm:text-base">Start your journey to becoming a true tattoo artist today!</p>
               </div>
             </div>
 
             {/* Booking Form - Right Side (compact) */}
-            <div className="flex items-center justify-center p-8 lg:p-12">
+            <div className="flex items-center justify-center lg:p-12">
               <div className="w-full max-w-md scroll-reveal-right">
                 <BookingForm className="w-full" />
               </div>
             </div>
+          </div>
           </div>
         </div>
       </section>

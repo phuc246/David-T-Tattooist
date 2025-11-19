@@ -42,23 +42,17 @@ export default function GalleryPage() {
     const handleScroll = () => {
       setScrollY(window.scrollY)
       
-      // Move logo to nav when scrolled
+      // Logo animation - lướt xuống như home, không hiển thị trên navbar
       const heroLogo = document.getElementById('gallery-hero-logo')
-      const logoMover = document.getElementById('logo-mover')
       
-      if (heroLogo && logoMover && scrollY > 100) {
-        const progress = Math.min((scrollY - 100) / 300, 1)
-        
-        if (progress >= 1) {
-          heroLogo.style.opacity = '0'
-          logoMover.style.opacity = '1'
-        } else {
-          heroLogo.style.opacity = String(1 - progress)
-          logoMover.style.opacity = '0'
-        }
-      } else if (heroLogo && logoMover) {
+      if (heroLogo && scrollY > 100) {
+        // Apply same animation as home page
+        const transform = `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
+        heroLogo.style.transform = transform
+        heroLogo.style.opacity = String(Math.max(0, 1 - (scrollY - 100) / 500))
+      } else if (heroLogo) {
+        heroLogo.style.transform = 'none'
         heroLogo.style.opacity = '1'
-        logoMover.style.opacity = '0'
       }
     }
     
@@ -285,12 +279,12 @@ export default function GalleryPage() {
       </section>
 
       {/* Featured Gallery Section - Full Width Product Collection */}
-      <section className="w-full bg-white py-12 px-0 relative">
-        <div className="w-full">
-          <h1 className="text-5xl font-bold mb-12 text-center text-black py-8">Bộ Sưu Tập Sản Phẩm</h1>
+      <section className="w-full overflow-x-hidden bg-white py-12 px-0 relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-12 text-center text-black py-8">Collections</h1>
 
           {/* Tab bar - Filter */}
-          <div className="flex justify-center gap-4 mb-12 flex-wrap px-4">
+          <div className="flex justify-center gap-4 mb-12 flex-wrap">
             <button
               onClick={() => setType('BlackWhite')}
               className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
@@ -301,6 +295,17 @@ export default function GalleryPage() {
             >
               Black &amp; White Tattoo
             </button>
+                        <button
+              onClick={() => setType('all')}
+              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
+                type === 'all'
+                  ? 'border-black bg-black text-white'
+                  : 'border-black text-black hover:bg-black hover:text-white'
+              }`}
+            >
+              All Designs
+            </button>
+
             <button
               onClick={() => setType('Color')}
               className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
@@ -311,18 +316,7 @@ export default function GalleryPage() {
             >
               Color Tattoo
             </button>
-            <button
-              onClick={() => setType('all')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
-                type === 'all'
-                  ? 'border-black bg-black text-white'
-                  : 'border-black text-black hover:bg-black hover:text-white'
-              }`}
-            >
-              All Designs
-            </button>
           </div>
-
           {loading ? (
             <div className="text-center py-20">
               <p className="text-gray-600">Loading gallery...</p>
@@ -333,10 +327,10 @@ export default function GalleryPage() {
             </div>
           ) : (
             <>
-              <div className={`w-full grid gap-4 px-4 max-w-7xl mx-auto ${
+              <div className={`w-full grid ${
                 viewMode === 'grid' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
-                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+                  ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4' 
+                  : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4'
               }`}>
                 {filtered.map((product: any, idx: number) => (
                   <div
@@ -344,10 +338,10 @@ export default function GalleryPage() {
                     onClick={() => setSelectedProduct(product)}
                     className={`group relative overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-black transition ${
                       viewMode === 'grid' 
-                        ? 'h-[500px] sm:h-[600px] lg:h-[700px]' 
+                        ? 'aspect-[3/4] h-auto' 
                         : idx % 7 === 0 || idx % 7 === 3 
-                          ? 'h-[400px] sm:h-[500px]' 
-                          : 'h-[300px] sm:h-[400px]'
+                          ? 'aspect-[3/4]' 
+                          : 'aspect-[3/4]'
                     }`}
                   >
                     <img

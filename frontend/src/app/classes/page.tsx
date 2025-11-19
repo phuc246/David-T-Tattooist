@@ -188,11 +188,11 @@ export default function ClassesPage() {
                       ))}
                     </ul>
                     
-                    <div className="flex items-center justify-between mb-6">
+                    {/* <div className="flex items-center justify-between mb-6">
                       <button className="px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-black rounded-lg font-semibold transition">
                         Enroll Now
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -215,7 +215,6 @@ export default function ClassesPage() {
                   onError={(e) => {(e.target as HTMLImageElement).src = '/img/all1.jpg'}}
                 />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                  <span className="text-white font-semibold">View Details</span>
                 </div>
               </div>
             ))}

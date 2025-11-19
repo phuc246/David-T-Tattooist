@@ -37,20 +37,20 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Image Gallery */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 border-2 border-gray-200 shadow-lg">
+            <div className="relative aspect-square overflow-hidden rounded-lg   ">
               <img 
                 src={imgs[selected]} 
                 alt={product.name} 
                 className="w-full h-full object-contain"
                 onError={(e) => {(e.target as HTMLImageElement).src = '/img/all1.jpg'}}
               />
-              {imgs.length > 1 && (
+              {/* {imgs.length > 1 && (
                 <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm px-3 py-1 rounded-lg">
                   <span className="text-white text-sm font-semibold">
                     {selected + 1} / {imgs.length}
                   </span>
                 </div>
-              )}
+              )} */}
             </div>
             
             {imgs.length > 1 && (
@@ -76,7 +76,7 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
               </div>
             )}
 
-            {/* Navigation buttons */}
+            {/* Navigation buttons
             {imgs.length > 1 && (
               <div className="flex gap-3">
                 <button
@@ -92,7 +92,7 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
                   Next →
                 </button>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Product Info */}
@@ -120,12 +120,12 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
             </div>
 
             <div className="space-y-4 pt-4 border-t-2 border-gray-200">
-              <Link
+              {/* <Link
                 href={`/product/${product._id || product.id}`}
                 className="block w-full px-6 py-4 border-2 border-black text-black hover:bg-black hover:text-white rounded-lg font-semibold text-center transition"
               >
                 View Full Details
-              </Link>
+              </Link> */}
               <Link
                 href="/#booking"
                 className="block w-full px-6 py-4 bg-black text-white hover:bg-gray-800 rounded-lg font-semibold text-center transition"
