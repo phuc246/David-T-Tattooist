@@ -13,9 +13,7 @@ html {
   color-scheme: light dark;
 }
 
-body {
-
-}
+body {}
 
 html.dark {
   color-scheme: dark;
@@ -25,12 +23,15 @@ body {
   background-color: #ffffff;
   color: #000000;
   transition: background-color 0.3s ease, color 0.3s ease;
+
 }
 
 /* Prevent horizontal overflow across the site */
 body {
   overflow-x: hidden;
+
 }
+
 html.dark body {
   background-color: #0a0a0a;
   color: #ffffff;
@@ -57,8 +58,13 @@ html:not(.dark) {
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Image marquee (horizontal banner) */
@@ -70,8 +76,13 @@ html:not(.dark) {
 }
 
 @keyframes marquee-img {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Small utility to pause animation on hover */
@@ -144,13 +155,16 @@ section#booking video,
 .brand-center {
   position: absolute;
   left: 50%;
-  top: 1rem; /* aligns near top padding of navbar */
+  top: 1rem;
+  /* aligns near top padding of navbar */
   transform: translateX(-50%);
-  pointer-events: none; /* let clicks pass to menu or buttons */
+  pointer-events: none;
+  /* let clicks pass to menu or buttons */
 }
 
 .brand-center .brand-text {
-  pointer-events: auto; /* allow link if needed */
+  pointer-events: auto;
+  /* allow link if needed */
   color: white;
   font-weight: 600;
   letter-spacing: 1px;
@@ -158,21 +172,21 @@ section#booking video,
 
 /* Translucent booking card + inputs */
 .translucent-card {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .translucent-input {
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .translucent-input::placeholder {
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Button Styling - White border with hover effect */
@@ -224,6 +238,7 @@ html.dark .btn-secondary:hover {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -244,6 +259,7 @@ html.dark .btn-secondary:hover {
     opacity: 0;
     transform: perspective(1000px) rotateY(-90deg);
   }
+
   to {
     opacity: 1;
     transform: perspective(1000px) rotateY(0deg);
@@ -255,6 +271,7 @@ html.dark .btn-secondary:hover {
     opacity: 0;
     transform: perspective(1000px) rotateY(90deg);
   }
+
   to {
     opacity: 1;
     transform: perspective(1000px) rotateY(0deg);
@@ -289,15 +306,15 @@ footer button {
 footer a:hover,
 footer button:hover {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-               0 0 20px rgba(255, 255, 255, 0.6),
-               0 0 30px rgba(255, 255, 255, 0.4);
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4);
   transform: scale(1.05);
 }
 
 footer .w-10.h-10:hover {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
-              0 0 25px rgba(255, 255, 255, 0.6),
-              0 0 35px rgba(255, 255, 255, 0.4);
+    0 0 25px rgba(255, 255, 255, 0.6),
+    0 0 35px rgba(255, 255, 255, 0.4);
 }
 
 /* Navbar text animations */
@@ -306,6 +323,7 @@ footer .w-10.h-10:hover {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -317,6 +335,7 @@ footer .w-10.h-10:hover {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -328,6 +347,7 @@ footer .w-10.h-10:hover {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -338,10 +358,21 @@ footer .w-10.h-10:hover {
   animation: slideInFromLeft 0.6s ease-out both;
 }
 
-.nav-links .nav-link:nth-child(1) { animation-delay: 0.1s; }
-.nav-links .nav-link:nth-child(2) { animation-delay: 0.2s; }
-.nav-links .nav-link:nth-child(3) { animation-delay: 0.3s; }
-.nav-links .nav-link:nth-child(4) { animation-delay: 0.4s; }
+.nav-links .nav-link:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.nav-links .nav-link:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.nav-links .nav-link:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.nav-links .nav-link:nth-child(4) {
+  animation-delay: 0.4s;
+}
 
 .nav-brand-text {
   animation: fadeInScale 0.8s ease-out 0.2s both;
@@ -399,8 +430,8 @@ footer .w-10.h-10:hover {
 /* Footer animation */
 footer {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 footer.revealed {
@@ -408,3 +439,28 @@ footer.revealed {
   transform: translateY(0);
 }
 
+/* Text Shimmer Effect for Navbar Brand */
+.text-shimmer {
+  background: linear-gradient(to right,
+      #4b5563 0%,
+      #ffffff 45%,
+      #ffffff 55%,
+      #4b5563 100%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 7s linear infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}

@@ -1,4 +1,4 @@
- 'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -18,7 +18,7 @@ export default function GalleryPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('newest')
   const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('grid')
-  const [displayCount, setDisplayCount] = useState(20)
+  const [displayCount, setDisplayCount] = useState(10) // Default to 10, will update in useEffect
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
@@ -36,15 +36,30 @@ export default function GalleryPage() {
     }
 
     fetchProducts()
+
+    // Set initial display count based on screen width
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setDisplayCount(5)
+      } else {
+        setDisplayCount(10)
+      }
+    }
+
+    // Initial check
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY)
-      
+
       // Logo animation - lướt xuống như home, không hiển thị trên navbar
       const heroLogo = document.getElementById('gallery-hero-logo')
-      
+
       if (heroLogo && scrollY > 100) {
         // Apply same animation as home page
         const transform = `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
@@ -55,10 +70,10 @@ export default function GalleryPage() {
         heroLogo.style.opacity = '1'
       }
     }
-    
+
     window.addEventListener('scroll', handleScroll)
     handleScroll() // Initial call
-    
+
     // Footer animation observer
     const footerObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -105,21 +120,21 @@ export default function GalleryPage() {
 
   useEffect(() => {
     let source = products && products.length > 0 ? products : SAMPLE_PRODUCTS
-    
+
     // Filter by type
     if (type !== 'all') {
       source = source.filter((p: any) => p.type === type)
     }
-    
+
     // Filter by search query
     if (searchQuery) {
-      source = source.filter((p: any) => 
+      source = source.filter((p: any) =>
         p.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.style?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.description?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-    
+
     // Sort
     const sorted = [...source].sort((a: any, b: any) => {
       switch (sortBy) {
@@ -133,7 +148,7 @@ export default function GalleryPage() {
           return 0
       }
     })
-    
+
     setFiltered(sorted.slice(0, displayCount))
   }, [type, products, searchQuery, sortBy, displayCount])
 
@@ -143,7 +158,7 @@ export default function GalleryPage() {
 
       {/* Hero Section - Full screen with video background */}
       <section id="vd_Heading" className="relative w-full h-screen overflow-hidden">
-          {/* Fullscreen Background Image */}
+        {/* Fullscreen Background Image */}
         <img
           src="/img/gal3.jpg"
           alt="Background"
@@ -155,14 +170,14 @@ export default function GalleryPage() {
 
         {/* Logo giữa màn hình – giữ hiệu ứng scroll */}
         <div className="vd-hero-content">
-          <img 
+          <img
             id="gallery-hero-logo"
-            className="logo-hd w-48 transition-all duration-1000" 
-            src="/img/Chu A tach nen.png" 
+            className="logo-hd w-48 transition-all duration-1000"
+            src="/img/Chu A tach nen.png"
             alt="Brand Logo"
             style={{
-              transform: scrollY > 100 
-                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})` 
+              transform: scrollY > 100
+                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
                 : 'none',
               opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
             }}
@@ -174,7 +189,7 @@ export default function GalleryPage() {
       <section className="w-full bg-gradient-to-b from-gray-50 to-white py-16 px-4 relative">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-black">Explore Our Styles</h2>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Side: Black & White */}
             <div className="space-y-6">
@@ -182,13 +197,13 @@ export default function GalleryPage() {
                 <h3 className="text-3xl font-bold text-black mb-2">Black & White</h3>
                 <p className="text-gray-600">Timeless elegance in monochrome</p>
               </div>
-              
+
               {/* Black & White Video */}
               <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group">
-                <video 
-                  autoPlay 
-                  muted 
-                  loop 
+                <video
+                  autoPlay
+                  muted
+                  loop
                   playsInline
                   className="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition duration-500"
                 >
@@ -205,10 +220,10 @@ export default function GalleryPage() {
 
               {/* Black & White Image */}
               <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group cursor-pointer">
-                <img 
-                  src="/img/all1.jpg" 
-                  alt="Black and White Tattoo" 
-                  className="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition duration-500 group-hover:scale-105" 
+                <img
+                  src="/img/all1.jpg"
+                  alt="Black and White Tattoo"
+                  className="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
@@ -226,13 +241,13 @@ export default function GalleryPage() {
                 <h3 className="text-3xl font-bold text-black mb-2">Color Tattoos</h3>
                 <p className="text-gray-600">Vibrant expressions of art</p>
               </div>
-              
+
               {/* Color Video */}
               <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group">
-                <video 
-                  autoPlay 
-                  muted 
-                  loop 
+                <video
+                  autoPlay
+                  muted
+                  loop
                   playsInline
                   className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500"
                 >
@@ -249,10 +264,10 @@ export default function GalleryPage() {
 
               {/* Color Image */}
               <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group cursor-pointer">
-                <img 
-                  src="/img/natra1.jpg" 
-                  alt="Color Tattoo" 
-                  className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500" 
+                <img
+                  src="/img/natra1.jpg"
+                  alt="Color Tattoo"
+                  className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
@@ -269,7 +284,7 @@ export default function GalleryPage() {
         {/* Image Marquee Banner - Fixed scrolling within container */}
         <div className="mb-10 overflow-hidden mt-6">
           <div className="image-marquee py-4">
-            {['all1.jpg','all2.jpg','all3.jpg','all4.jpg','all5.jpg','all6.jpg','gal.jpg','gal2.jpg'].concat(['all1.jpg','all2.jpg','all3.jpg','all4.jpg']).map((img, i) => (
+            {['all1.jpg', 'all2.jpg', 'all3.jpg', 'all4.jpg', 'all5.jpg', 'all6.jpg', 'gal.jpg', 'gal2.jpg'].concat(['all1.jpg', 'all2.jpg', 'all3.jpg', 'all4.jpg']).map((img, i) => (
               <div key={i} className="flex-shrink-0 w-56 h-36 rounded overflow-hidden">
                 <img src={`/img/${img}`} alt={`banner-${i}`} className="w-full h-full object-cover" />
               </div>
@@ -287,35 +302,32 @@ export default function GalleryPage() {
           <div className="flex justify-center gap-4 mb-12 flex-wrap">
             <button
               onClick={() => setType('BlackWhite')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
-                type === 'BlackWhite'
-                  ? 'border-black bg-black text-white'
-                  : 'border-black text-black hover:bg-black hover:text-white'
-              }`}
+              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'BlackWhite'
+                ? 'border-black bg-black text-white'
+                : 'border-black text-black hover:bg-black hover:text-white'
+                }`}
             >
               Black &amp; White Tattoo
             </button>
-                        <button
+            <button
+              onClick={() => setType('Color')}
+              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'Color'
+                ? 'border-black bg-black text-white'
+                : 'border-black text-black hover:bg-black hover:text-white'
+                }`}
+            >
+              Color Tattoo
+            </button>
+            <button
               onClick={() => setType('all')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
-                type === 'all'
-                  ? 'border-black bg-black text-white'
-                  : 'border-black text-black hover:bg-black hover:text-white'
-              }`}
+              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'all'
+                ? 'border-black bg-black text-white'
+                : 'border-black text-black hover:bg-black hover:text-white'
+                }`}
             >
               All Designs
             </button>
 
-            <button
-              onClick={() => setType('Color')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${
-                type === 'Color'
-                  ? 'border-black bg-black text-white'
-                  : 'border-black text-black hover:bg-black hover:text-white'
-              }`}
-            >
-              Color Tattoo
-            </button>
           </div>
           {loading ? (
             <div className="text-center py-20">
@@ -327,28 +339,26 @@ export default function GalleryPage() {
             </div>
           ) : (
             <>
-              <div className={`w-full grid ${
-                viewMode === 'grid' 
-                  ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4' 
-                  : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4'
-              }`}>
+              <div className={`w-full grid ${viewMode === 'grid'
+                ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4'
+                : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4'
+                }`}>
                 {filtered.map((product: any, idx: number) => (
                   <div
                     key={product._id || product.id}
                     onClick={() => setSelectedProduct(product)}
-                    className={`group relative overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-black transition ${
-                      viewMode === 'grid' 
-                        ? 'aspect-[3/4] h-auto' 
-                        : idx % 7 === 0 || idx % 7 === 3 
-                          ? 'aspect-[3/4]' 
-                          : 'aspect-[3/4]'
-                    }`}
+                    className={`group relative overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-black transition ${viewMode === 'grid'
+                      ? 'aspect-[3/4] h-auto'
+                      : idx % 7 === 0 || idx % 7 === 3
+                        ? 'aspect-[3/4]'
+                        : 'aspect-[3/4]'
+                      }`}
                   >
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                      onError={(e) => {(e.target as HTMLImageElement).src = '/img/all1.jpg'}}
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/img/all1.jpg' }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-6">
                       <div className="flex items-center justify-between mb-2">
@@ -364,12 +374,12 @@ export default function GalleryPage() {
                   </div>
                 ))}
               </div>
-              
+
               {/* Load More Button */}
               {displayCount < (products.length || SAMPLE_PRODUCTS.length) && (
                 <div className="text-center mt-12 px-4">
                   <button
-                    onClick={() => setDisplayCount(displayCount + 20)}
+                    onClick={() => setDisplayCount(displayCount + 10)}
                     className="px-8 py-3 border-2 border-black text-black hover:bg-black hover:text-white rounded-lg font-semibold transition"
                   >
                     Load More Designs

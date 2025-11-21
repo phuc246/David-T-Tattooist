@@ -60,10 +60,10 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY)
-      
+
       // Move logo to nav when scrolled - REMOVED, logo should not appear on navbar
       const heroLogo = document.getElementById('hero-logo')
-      
+
       if (heroLogo && scrollY > 100) {
         // Just hide the hero logo, don't move it to navbar
         heroLogo.style.opacity = String(Math.max(0, 1 - (scrollY - 100) / 500))
@@ -71,13 +71,13 @@ export default function Home() {
         heroLogo.style.opacity = '1'
       }
     }
-    
+
     // Intersection Observer for scroll reveal animations - repeatable
     const observerOptions = {
       threshold: 0.15,
       rootMargin: '0px 0px -100px 0px'
     }
-    
+
     const scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -88,22 +88,22 @@ export default function Home() {
         }
       })
     }, observerOptions)
-    
+
     // Observe all scroll reveal elements
     const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale, .scroll-section')
     scrollElements.forEach(el => {
       scrollObserver.observe(el)
     })
-    
+
     // Observe footer
     const footer = document.getElementById('main-footer')
     if (footer) {
       scrollObserver.observe(footer)
     }
-    
+
     window.addEventListener('scroll', handleScroll)
     handleScroll() // Initial call
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
       scrollObserver.disconnect()
@@ -133,14 +133,14 @@ export default function Home() {
 
         {/* Content - Center Logo (matching legacy positioning) */}
         <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <img 
-            src="/img/Chu A tach nen.png" 
-            alt="A Little Ink Logo" 
+          <img
+            src="/img/Chu A tach nen.png"
+            alt="A Little Ink Logo"
             id="hero-logo"
             className="w-32 h-auto transition-all duration-1000"
             style={{
-              transform: scrollY > 100 
-                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})` 
+              transform: scrollY > 100
+                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
                 : 'none',
               opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
             }}
@@ -157,21 +157,21 @@ export default function Home() {
 
         <div className="relative z-10 w-full py-12 lg:py-0 px-4 sm:px-6 lg:px-0">
           <div className="w-full max-w-7xl mx-auto">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2">
-            <div className="hidden lg:block" />
-            <div className="flex items-center">
-              <div className="space-y-4 sm:space-y-6 text-white">
-                <h2 className="text-4xl lg:text-5xl font-bold scroll-reveal hover:scale-105 transition-transform duration-300 cursor-default">
-                  Welcome to Tattoo in Saigon, Vietnam
-                </h2>
-                <p className="text-white-700 max-w-xl leading-relaxed scroll-reveal hover:text-white transition-colors duration-300 cursor-default">
-                  David T Tattooist được thành lập từ những nghệ sĩ xăm tài năng đến từ nhiều miền khác nhau.
-                  Với nhiều năm kinh nghiệm và giải thưởng trong nghề, chúng tôi mang đến những hình xăm độc đáo và ý nghĩa,
-                  chăm chút tỉ mỉ bởi các nghệ sĩ của David T Tattooist.
-                </p>
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2">
+              <div className="hidden lg:block" />
+              <div className="flex items-center">
+                <div className="space-y-4 sm:space-y-6 text-white">
+                  <h2 className="text-4xl lg:text-5xl font-bold scroll-reveal hover:scale-105 transition-transform duration-300 cursor-default">
+                    Welcome to Tattoo in Saigon, Vietnam
+                  </h2>
+                  <p className="text-white-700 max-w-xl leading-relaxed scroll-reveal hover:text-white transition-colors duration-300 cursor-default">
+                    David T Tattooist được thành lập từ những nghệ sĩ xăm tài năng đến từ nhiều miền khác nhau.
+                    Với nhiều năm kinh nghiệm và giải thưởng trong nghề, chúng tôi mang đến những hình xăm độc đáo và ý nghĩa,
+                    chăm chút tỉ mỉ bởi các nghệ sĩ của David T Tattooist.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
       </section>
@@ -179,28 +179,28 @@ export default function Home() {
       {/* Artists Section - Alternating Fullbleed Layout (Like Legacy) */}
       <section className="py-0 px-0 bg-white">
         <div className="w-full max-w-full">
-          <h2 className="text-4xl font-bold text-center px-4 py-8 text-black">Artists</h2>
-          
+          <h2 className="text-4xl font-bold text-center px-4 py-8 text-black scroll-reveal">Artists</h2>
+
           {ARTISTS.map((artist, index) => (
-            <div 
-              key={artist.id} 
-              id={`artist-${artist.id}`} 
+            <div
+              key={artist.id}
+              id={`artist-${artist.id}`}
               className="mb-0"
             >
               <div className={`flex flex-col lg:flex-row mb-16 gap-0 items-stretch overflow-hidden ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
                 {/* Image - Full bleed */}
-                <div className="w-full lg:w-2/3 lg:h-[500px] h-[300px] overflow-hidden flex-shrink-0 rounded-lg">
-                  <img 
-                    src={artist.image} 
-                    alt={artist.name} 
+                <div className="w-full lg:w-2/3 lg:h-[600px] h-[500px] overflow-hidden flex-shrink-0 scroll-reveal">
+                  <img
+                    src={artist.image}
+                    alt={artist.name}
                     className="w-full h-full object-cover hover:scale-105 transition duration-300"
                   />
                 </div>
-                
+
                 {/* Text Content */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-between p-8 lg:px-16 py-0 bg-white">
+                <div className="w-full lg:w-1/2 flex flex-col justify-between p-8 lg:px-8 py-0 bg-white scroll-reveal">
                   {/* Content ở trên */}
-                  <div className="max-w-lg space-y-6">
+                  <div className="max-w-lg space-y-12">
                     <h3 className="text-4xl lg:text-5xl font-bold text-black hover:scale-105 transition-transform duration-300">{artist.name}</h3>
                     <p className="text-gray-700 leading-relaxed text-justify lg:text-lg hover:text-black transition-colors duration-300">{artist.description}</p>
                     <div className="pt-6 space-y-3 border-t border-gray-300">
@@ -212,11 +212,11 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  
+
                   {/* Button ở dưới cùng bên phải */}
                   <div className="flex justify-end mt-8">
-                    <Link 
-                      href={`/artists#artist-${artist.id}`} 
+                    <Link
+                      href={`/artists#artist-${artist.id}`}
                       className="inline-block px-8 py-3 border-2 border-black text-black hover:bg-black hover:text-white rounded-lg font-semibold transition transform hover:scale-105"
                     >
                       See more
@@ -228,11 +228,13 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Featured Gallery - Title + Grid Layout */}
       {/* Featured Gallery - Title + Grid Layout */}
       <section className="py-4 px-0 bg-white scroll-section overflow-hidden">
         <div className="w-full max-w-full">
           <h2 className="text-4xl font-bold text-center px-4 py-4 text-black scroll-reveal">Top Collections</h2>
-          
+
           {/* Row 1: Black & White */}
           <div className="mb-0 scroll-section">
             {/* Title + divider row */}
@@ -240,30 +242,30 @@ export default function Home() {
               <div className="h-8 w-1 bg-black flex-shrink-0"></div>
               <h3 className="text-2xl font-bold text-black uppercase tracking-wider whitespace-nowrap">Black &amp; White</h3>
             </div>
-            
+
             {/* 4 Images Grid - Full width, no gap */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 w-full max-w-full overflow-hidden">
-                {FEATURED_TATTOOS.filter(t => t.type === 'Black & White').map((tattoo, idx) => (
-                  <div 
-                    key={tattoo.id} 
-                    className="group relative overflow-hidden cursor-pointer h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] scroll-reveal-scale"
-                    style={{ transitionDelay: `${idx * 0.15}s` }}
-                  >
-                    <img 
-                      src={tattoo.image} 
-                      alt={tattoo.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                      onError={(e) => {
-                        const img = e.target as HTMLImageElement
-                        img.src = '/img/studio.jpg'
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
-                      <h3 className="text-lg font-bold mb-1 text-white">{tattoo.name}</h3>
-                      <p className="text-gray-300 text-sm">{tattoo.style}</p>
-                    </div>
+              {FEATURED_TATTOOS.filter(t => t.type === 'Black & White').map((tattoo, idx) => (
+                <div
+                  key={tattoo.id}
+                  className="group relative overflow-hidden cursor-pointer h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] scroll-reveal-scale"
+                  style={{ transitionDelay: `${idx * 0.15}s` }}
+                >
+                  <img
+                    src={tattoo.image}
+                    alt={tattoo.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement
+                      img.src = '/img/studio.jpg'
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
+                    <h3 className="text-lg font-bold mb-1 text-white">{tattoo.name}</h3>
+                    <p className="text-gray-300 text-sm">{tattoo.style}</p>
                   </div>
-                ))}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -274,18 +276,18 @@ export default function Home() {
               <div className="h-8 w-1 bg-black flex-shrink-0"></div>
               <h3 className="text-2xl font-bold text-black uppercase tracking-wider whitespace-nowrap">Color</h3>
             </div>
-            
+
             {/* 4 Images Grid - Full width, no gap */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 w-full max-w-full overflow-hidden">
               {FEATURED_TATTOOS.filter(t => t.type === 'Color').map((tattoo, idx) => (
-                <div 
-                  key={tattoo.id} 
+                <div
+                  key={tattoo.id}
                   className="group relative overflow-hidden cursor-pointer h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] scroll-reveal-scale"
                   style={{ transitionDelay: `${idx * 0.15}s` }}
                 >
-                  <img 
-                    src={tattoo.image} 
-                    alt={tattoo.name} 
+                  <img
+                    src={tattoo.image}
+                    alt={tattoo.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                     onError={(e) => {
                       const img = e.target as HTMLImageElement
@@ -302,8 +304,8 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-0 px-4 scroll-reveal">
-            <Link 
-              href="/gallery" 
+            <Link
+              href="/gallery"
               className="px-8 py-3 border-2 border-black text-black hover:bg-black hover:text-white rounded-lg font-semibold transition inline-block"
             >
               View All Designs
@@ -327,27 +329,27 @@ export default function Home() {
 
         <div className="relative z-10 w-full px-4 sm:px-6 lg:px-0">
           <div className="w-full max-w-7xl mx-auto">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0">
-            {/* Left Content - vertically centered */}
-            <div className="flex items-center lg:p-16">
-              <div className="space-y-4 sm:space-y-6 text-white">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold scroll-reveal-left">Discover Tattoo Artistry With Us</h2>
-                <p className="text-gray-200 max-w-xl leading-relaxed scroll-reveal text-sm sm:text-base">
-                  Welcome to our in-depth tattoo course, where you'll gain knowledge from basic to advanced levels,
-                  taught by leading artists. From drawing techniques and machine usage to safety and hygiene protocols,
-                  we are committed to providing a professional and inspiring learning environment.
-                </p>
-                <p className="text-gray-200 font-semibold scroll-reveal text-sm sm:text-base">Start your journey to becoming a true tattoo artist today!</p>
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0">
+              {/* Left Content - vertically centered */}
+              <div className="flex items-center lg:p-16">
+                <div className="space-y-4 sm:space-y-6 text-white">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold scroll-reveal-left">Discover Tattoo Artistry With Us</h2>
+                  <p className="text-gray-200 max-w-xl leading-relaxed scroll-reveal text-sm sm:text-base">
+                    Welcome to our in-depth tattoo course, where you'll gain knowledge from basic to advanced levels,
+                    taught by leading artists. From drawing techniques and machine usage to safety and hygiene protocols,
+                    we are committed to providing a professional and inspiring learning environment.
+                  </p>
+                  <p className="text-gray-200 font-semibold scroll-reveal text-sm sm:text-base">Start your journey to becoming a true tattoo artist today!</p>
+                </div>
               </div>
-            </div>
 
-            {/* Booking Form - Right Side (compact) */}
-            <div className="flex items-center justify-center lg:p-12">
-              <div className="w-full max-w-md scroll-reveal-right">
-                <BookingForm className="w-full" />
+              {/* Booking Form - Right Side (compact) */}
+              <div className="flex items-center justify-center lg:p-12">
+                <div className="w-full max-w-md scroll-reveal-right">
+                  <BookingForm className="w-full" />
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
       </section>
