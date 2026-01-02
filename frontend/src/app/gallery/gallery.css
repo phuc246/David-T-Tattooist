@@ -1,3 +1,10 @@
+/* Prevent overscroll behavior - Chặn scroll quá lộ vùng trắng */
+html,
+body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+}
+
 /* Gallery Typography Styles */
 .vertical-text-left {
   writing-mode: vertical-rl;
@@ -25,8 +32,39 @@
   height: 16rem;
 }
 
-.vertical-text-left h2, .vertical-text-right h2 {
+.vertical-text-left h2,
+.vertical-text-right h2 {
   margin: 0;
   line-height: 1;
   transform-origin: center;
+}
+
+/* Marquee Animation */
+.marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background-color: black;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-item {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }

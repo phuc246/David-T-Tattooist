@@ -64,12 +64,11 @@ export default function Footer({ id }: { id?: string }) {
           </div>
           <div className="text-center">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Address</h4>
-            <p className="text-xs">New City Thu Thiem 17 Đ Mai Chí Thọ, P An Khánh., Ho Chi Minh City, Vietnam</p>
+            <p className="text-xs">17 Mai Chi Tho, Ward An Khanh, Distric 2, Sai Gon</p>
           </div>
           <div className="text-center">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Hours</h4>
-            <p className="text-xs">Monday - Friday: 9am - 6pm</p>
-            <p className="text-xs">Saturday: 10am - 4pm</p>
+            <p className="text-xs">Open: 10:00 AM - Close: 7:00 PM</p>
           </div>
         </div>
 

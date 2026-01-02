@@ -2,399 +2,435 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import CardGallery from '../components/CardGallery'
 import ModalProduct from '../components/ModalProduct'
 import './gallery.css'
 import '../featured-gallery.css'
+import { getTattooDesigns, getPageContent } from '../../../lib/queries'
+import { TattooGridSkeleton } from '../components/SkeletonLoader'
 
 export default function GalleryPage() {
-  const [products, setProducts] = useState<any[]>([])
-  const [filtered, setFiltered] = useState<any[]>([])
-  const [type, setType] = useState('BlackWhite')
-  const [loading, setLoading] = useState(true)
-  const [selectedProduct, setSelectedProduct] = useState<any>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [sortBy, setSortBy] = useState('newest')
-  const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('grid')
-  const [displayCount, setDisplayCount] = useState(10) // Default to 10, will update in useEffect
-  const [scrollY, setScrollY] = useState(0)
+    const [products, setProducts] = useState<any[]>([])
+    const [filtered, setFiltered] = useState<any[]>([])
+    const [type, setType] = useState('All')
+    const [loading, setLoading] = useState(true)
+    const [selectedProduct, setSelectedProduct] = useState<any>(null)
+    const [displayCount, setDisplayCount] = useState(10)
+    const [scrollY, setScrollY] = useState(0)
+    const [pageContent, setPageContent] = useState<any>(null)
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch('http://localhost:3001/api/products')
-        if (res.ok) {
-          setProducts(await res.json())
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [tattooData, galleryPageData] = await Promise.all([
+                    getTattooDesigns(),
+                    getPageContent('gallery')
+                ])
+                setProducts(tattooData)
+                setPageContent(galleryPageData)
+            } catch (error) {
+                console.error('Error fetching gallery data:', error)
+            } finally {
+                setLoading(false)
+            }
         }
-      } catch (error) {
-        console.error('Error fetching products:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
 
-    fetchProducts()
+        fetchData()
 
-    // Set initial display count based on screen width
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setDisplayCount(5)
-      } else {
-        setDisplayCount(10)
-      }
-    }
-
-    // Initial check
-    handleResize()
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY)
-
-      // Logo animation - lướt xuống như home, không hiển thị trên navbar
-      const heroLogo = document.getElementById('gallery-hero-logo')
-
-      if (heroLogo && scrollY > 100) {
-        // Apply same animation as home page
-        const transform = `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
-        heroLogo.style.transform = transform
-        heroLogo.style.opacity = String(Math.max(0, 1 - (scrollY - 100) / 500))
-      } else if (heroLogo) {
-        heroLogo.style.transform = 'none'
-        heroLogo.style.opacity = '1'
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Initial call
-
-    // Footer animation observer
-    const footerObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed')
+        // Set initial display count based on screen width
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setDisplayCount(5)
+            } else {
+                setDisplayCount(10)
+            }
         }
-      })
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    })
 
-    const footer = document.getElementById('main-footer')
-    if (footer) {
-      footerObserver.observe(footer)
-    }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      footerObserver.disconnect()
-    }
-  }, [scrollY])
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY)
 
-  // sample images fallback (30 BW, 20 Color) using available images
-  const SAMPLE_PRODUCTS = Array.from({ length: 30 }).map((_, i) => ({
-    id: `bw-${i}`,
-    name: `BW Design ${i + 1}`,
-    image: `/img/all${(i % 6) + 1}.jpg`,
-    images: Array.from({ length: 4 }).map((__, j) => `/img/all${((i + j) % 6) + 1}.jpg`),
-    type: 'BlackWhite',
-    style: 'Minimalist',
-    description: 'Sample black & white tattoo from collection'
-  })).concat(
-    Array.from({ length: 20 }).map((_, i) => ({
-      id: `color-${i}`,
-      name: `Color Design ${i + 1}`,
-      image: `/img/all${((i + 3) % 6) + 1}.jpg`,
-      images: Array.from({ length: 4 }).map((__, j) => `/img/all${((i + j + 2) % 6) + 1}.jpg`),
-      type: 'Color',
-      style: 'Watercolor',
-      description: 'Sample color tattoo from collection'
-    }))
-  )
+            const heroLogo = document.getElementById('gallery-hero-logo')
 
-  useEffect(() => {
-    let source = products && products.length > 0 ? products : SAMPLE_PRODUCTS
+            if (heroLogo && scrollY > 100) {
+                const transform = `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
+                heroLogo.style.transform = transform
+                heroLogo.style.opacity = String(Math.max(0, 1 - (scrollY - 100) / 500))
+            } else if (heroLogo) {
+                heroLogo.style.transform = 'none'
+                heroLogo.style.opacity = '1'
+            }
+        }
 
-    // Filter by type
-    if (type !== 'all') {
-      source = source.filter((p: any) => p.type === type)
-    }
+        window.addEventListener('scroll', handleScroll)
+        handleScroll()
 
-    // Filter by search query
-    if (searchQuery) {
-      source = source.filter((p: any) =>
-        p.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.style?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description?.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    }
+        const footerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed')
+                }
+            })
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        })
 
-    // Sort
-    const sorted = [...source].sort((a: any, b: any) => {
-      switch (sortBy) {
-        case 'newest':
-          return (b.id || 0) - (a.id || 0)
-        case 'oldest':
-          return (a.id || 0) - (b.id || 0)
-        case 'name':
-          return (a.name || '').localeCompare(b.name || '')
-        default:
-          return 0
-      }
-    })
+        const footer = document.getElementById('main-footer')
+        if (footer) {
+            footerObserver.observe(footer)
+        }
 
-    setFiltered(sorted.slice(0, displayCount))
-  }, [type, products, searchQuery, sortBy, displayCount])
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            footerObserver.disconnect()
+        }
+    }, [scrollY])
 
-  return (
-    <div className="min-h-screen bg-white text-black">
-      <Navbar />
+    useEffect(() => {
+        let source = products && products.length > 0 ? products : []
 
-      {/* Hero Section - Full screen with video background */}
-      <section id="vd_Heading" className="relative w-full h-screen overflow-hidden">
-        {/* Fullscreen Background Image */}
-        <img
-          src="/img/gal3.jpg"
-          alt="Background"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        // Filter by type
+        if (type !== 'All') {
+            source = source.filter((p: any) => p.type === type)
+        }
 
-        {/* Overlay giữ nguyên */}
-        <div className="vd-hero-overlay"></div>
+        setFiltered(source.slice(0, displayCount))
+    }, [type, products, displayCount])
 
-        {/* Logo giữa màn hình – giữ hiệu ứng scroll */}
-        <div className="vd-hero-content">
-          <img
-            id="gallery-hero-logo"
-            className="logo-hd w-48 transition-all duration-1000"
-            src="/img/Chu A tach nen.png"
-            alt="Brand Logo"
-            style={{
-              transform: scrollY > 100
-                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
-                : 'none',
-              opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
-            }}
-          />
-        </div>
-      </section>
+    return (
+        <div className="min-h-screen bg-white text-black">
+            <Navbar />
 
-      {/* Media Grid Section: Black & White (Left) + Color (Right) */}
-      <section className="w-full bg-gradient-to-b from-gray-50 to-white py-16 px-4 relative">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center text-black">Explore Our Styles</h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Side: Black & White */}
-            <div className="space-y-6">
-              <div className="text-center mb-6">
-                <h3 className="text-3xl font-bold text-black mb-2">Black & White</h3>
-                <p className="text-gray-600">Timeless elegance in monochrome</p>
-              </div>
-
-              {/* Black & White Video */}
-              <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition duration-500"
-                >
-                  <source src="/img/Video/allClip.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
-                    <h4 className="text-xl font-bold text-black">Classic Monochrome</h4>
-                    <p className="text-gray-700 text-sm mt-1">Bold lines, dramatic shading</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Black & White Image */}
-              <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group cursor-pointer">
-                <img
-                  src="/img/all1.jpg"
-                  alt="Black and White Tattoo"
-                  className="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
-                    <h4 className="text-xl font-bold text-black">Fine Line Art</h4>
-                    <p className="text-gray-700 text-sm mt-1">Precision and detail</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Side: Color */}
-            <div className="space-y-6">
-              <div className="text-center mb-6">
-                <h3 className="text-3xl font-bold text-black mb-2">Color Tattoos</h3>
-                <p className="text-gray-600">Vibrant expressions of art</p>
-              </div>
-
-              {/* Color Video */}
-              <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500"
-                >
-                  <source src="/img/Video/allClip.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
-                    <h4 className="text-xl font-bold text-black">Vibrant Colors</h4>
-                    <p className="text-gray-700 text-sm mt-1">Bold and expressive designs</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Color Image */}
-              <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group cursor-pointer">
-                <img
-                  src="/img/natra1.jpg"
-                  alt="Color Tattoo"
-                  className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
-                    <h4 className="text-xl font-bold text-black">Watercolor Style</h4>
-                    <p className="text-gray-700 text-sm mt-1">Artistic fluidity</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Image Marquee Banner - Fixed scrolling within container */}
-        <div className="mb-10 overflow-hidden mt-6">
-          <div className="image-marquee py-4">
-            {['all1.jpg', 'all2.jpg', 'all3.jpg', 'all4.jpg', 'all5.jpg', 'all6.jpg', 'gal.jpg', 'gal2.jpg'].concat(['all1.jpg', 'all2.jpg', 'all3.jpg', 'all4.jpg']).map((img, i) => (
-              <div key={i} className="flex-shrink-0 w-56 h-36 rounded overflow-hidden">
-                <img src={`/img/${img}`} alt={`banner-${i}`} className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Gallery Section - Full Width Product Collection */}
-      <section className="w-full overflow-x-hidden bg-white py-12 px-0 relative">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-12 text-center text-black py-8">Collections</h1>
-
-          {/* Tab bar - Filter */}
-          <div className="flex justify-center gap-4 mb-12 flex-wrap">
-            <button
-              onClick={() => setType('BlackWhite')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'BlackWhite'
-                ? 'border-black bg-black text-white'
-                : 'border-black text-black hover:bg-black hover:text-white'
-                }`}
-            >
-              Black &amp; White Tattoo
-            </button>
-            <button
-              onClick={() => setType('Color')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'Color'
-                ? 'border-black bg-black text-white'
-                : 'border-black text-black hover:bg-black hover:text-white'
-                }`}
-            >
-              Color Tattoo
-            </button>
-            <button
-              onClick={() => setType('all')}
-              className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'all'
-                ? 'border-black bg-black text-white'
-                : 'border-black text-black hover:bg-black hover:text-white'
-                }`}
-            >
-              All Designs
-            </button>
-
-          </div>
-          {loading ? (
-            <div className="text-center py-20">
-              <p className="text-gray-600">Loading gallery...</p>
-            </div>
-          ) : filtered.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-gray-600 text-xl">No designs found. Try adjusting your filters.</p>
-            </div>
-          ) : (
-            <>
-              <div className={`w-full grid ${viewMode === 'grid'
-                ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4'
-                : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4'
-                }`}>
-                {filtered.map((product: any, idx: number) => (
-                  <div
-                    key={product._id || product.id}
-                    onClick={() => setSelectedProduct(product)}
-                    className={`group relative overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-black transition ${viewMode === 'grid'
-                      ? 'aspect-[3/4] h-auto'
-                      : idx % 7 === 0 || idx % 7 === 3
-                        ? 'aspect-[3/4]'
-                        : 'aspect-[3/4]'
-                      }`}
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                      onError={(e) => { (e.target as HTMLImageElement).src = '/img/all1.jpg' }}
+            {/* Hero Section - Full screen with image background */}
+            <section id="vd_Heading" className="relative w-full h-screen overflow-hidden">
+                {/* Fullscreen Background Image */}
+                {pageContent?.heroImage?.url ? (
+                    <Image
+                        src={pageContent.heroImage.url}
+                        alt="Gallery Background"
+                        fill
+                        priority
+                        className="object-cover"
+                        sizes="100vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-2xl font-bold text-white">{product.name}</h3>
-                        {product.style && (
-                          <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs text-white">
-                            {product.style}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-gray-300 text-lg">{product.type}</p>
+                ) : (
+                    <div className="absolute inset-0 w-full h-full bg-black flex items-center justify-center">
+                        <Image
+                            src="/img/Chu A tach nen.png"
+                            alt="Background"
+                            width={256}
+                            height={256}
+                            priority
+                            className="w-64 h-auto opacity-50"
+                        />
                     </div>
-                  </div>
-                ))}
-              </div>
+                )}
 
-              {/* Load More Button */}
-              {displayCount < (products.length || SAMPLE_PRODUCTS.length) && (
-                <div className="text-center mt-12 px-4">
-                  <button
-                    onClick={() => setDisplayCount(displayCount + 10)}
-                    className="px-8 py-3 border-2 border-black text-black hover:bg-black hover:text-white rounded-lg font-semibold transition"
-                  >
-                    Load More Designs
-                  </button>
+                {/* Overlay */}
+                <div className="vd-hero-overlay"></div>
+
+                {/* Logo center */}
+                <div className="vd-hero-content">
+                    <Image
+                        id="gallery-hero-logo"
+                        className="logo-hd w-48 transition-all duration-1000"
+                        src="/img/Chu A tach nen.png"
+                        alt="Brand Logo"
+                        width={192}
+                        height={192}
+                        priority
+                        style={{
+                            transform: scrollY > 100
+                                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
+                                : 'none',
+                            opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
+                        }}
+                    />
                 </div>
-              )}
-            </>
-          )}
+            </section>
+
+            {/* Media Grid Section: Black & White (Left) + Color (Right) */}
+            <section className="w-full bg-gradient-to-b from-gray-50 to-white py-16 px-4 relative">
+                <div className="max-w-7xl mx-auto">
+                    <h2 className="text-4xl font-bold mb-12 text-center text-black">Explore Our Styles</h2>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Left Side: Black & White */}
+                        <div className="space-y-6">
+                            <div className="text-center mb-6">
+                                <h3 className="text-3xl font-bold text-black mb-2">Black & White</h3>
+                                <p className="text-gray-600">Timeless elegance in monochrome</p>
+                            </div>
+
+                            {/* Black & White Video */}
+                            <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group">
+                                {pageContent?.bwStyleVideo?.url ? (
+                                    <video
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500"
+                                    >
+                                        <source src={pageContent.bwStyleVideo.url} type="video/mp4" />
+                                    </video>
+                                ) : (
+                                    <div className="w-full h-[500px] bg-black flex items-center justify-center">
+                                        <Image
+                                            src="/img/Chu A tach nen.png"
+                                            alt="Black & White Style"
+                                            width={128}
+                                            height={128}
+                                            className="w-32 h-auto opacity-50"
+                                        />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div className="absolute bottom-6 left-6 right-6">
+                                    <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
+                                        <h4 className="text-xl font-bold text-black">Classic Monochrome</h4>
+                                        <p className="text-gray-700 text-sm mt-1">Bold lines, dramatic shading</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Black & White Image */}
+                            <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group h-[500px]">
+                                {pageContent?.bwStyleImage?.url ? (
+                                    <Image
+                                        src={pageContent.bwStyleImage.url}
+                                        alt="Black and White Tattoo"
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition duration-500"
+                                        sizes="(max-width: 1024px) 100vw, 50vw"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                        <Image
+                                            src="/img/Chu A tach nen.png"
+                                            alt="Black & White"
+                                            width={128}
+                                            height={128}
+                                            className="w-32 h-auto opacity-30"
+                                        />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div className="absolute bottom-6 left-6 right-6">
+                                    <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
+                                        <h4 className="text-xl font-bold text-black">Traditional Ink</h4>
+                                        <p className="text-gray-700 text-sm mt-1">Precision and artistry</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Side: Color */}
+                        <div className="space-y-6">
+                            <div className="text-center mb-6">
+                                <h3 className="text-3xl font-bold text-black mb-2">Color Tattoos</h3>
+                                <p className="text-gray-600">Vibrant expressions of art</p>
+                            </div>
+
+                            {/* Color Video */}
+                            <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group">
+                                {pageContent?.colorStyleVideo?.url ? (
+                                    <video
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        className="w-full h-[500px] object-cover group-hover:scale-105 transition duration-500"
+                                    >
+                                        <source src={pageContent.colorStyleVideo.url} type="video/mp4" />
+                                    </video>
+                                ) : (
+                                    <div className="w-full h-[500px] bg-black flex items-center justify-center">
+                                        <Image
+                                            src="/img/Chu A tach nen.png"
+                                            alt="Color Style"
+                                            width={128}
+                                            height={128}
+                                            className="w-32 h-auto opacity-50"
+                                        />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div className="absolute bottom-6 left-6 right-6">
+                                    <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
+                                        <h4 className="text-xl font-bold text-black">Living Canvas</h4>
+                                        <p className="text-gray-700 text-sm mt-1">Dynamic color palettes</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Color Image */}
+                            <div className="relative rounded-lg overflow-hidden shadow-2xl border-4 border-black group h-[500px]">
+                                {pageContent?.colorStyleImage?.url ? (
+                                    <Image
+                                        src={pageContent.colorStyleImage.url}
+                                        alt="Color Tattoo"
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition duration-500"
+                                        sizes="(max-width: 1024px) 100vw, 50vw"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                        <Image
+                                            src="/img/Chu A tach nen.png"
+                                            alt="Color"
+                                            width={128}
+                                            height={128}
+                                            className="w-32 h-auto opacity-30"
+                                        />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div className="absolute bottom-6 left-6 right-6">
+                                    <div className="bg-white/90 backdrop-blur-sm px-6 py-4 rounded-lg">
+                                        <h4 className="text-xl font-bold text-black">Vibrant Colors</h4>
+                                        <p className="text-gray-700 text-sm mt-1">Bold and expressive designs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Horizontal Scrolling Image Marquee */}
+            <section className="w-full overflow-hidden py-8 bg-transparent">
+                <div className="marquee-wrapper !bg-transparent">
+                    <div className="marquee-content gap-8 py-4">
+                        {/* Duplicate the list to ensure seamless scrolling */}
+                        {(pageContent?.galleryMarqueeImages?.length > 0
+                            ? [...pageContent.galleryMarqueeImages, ...pageContent.galleryMarqueeImages]
+                            : [...products, ...products].slice(0, 20)
+                        ).map((item: any, idx: number) => (
+                            <div key={idx} className="marquee-item flex-shrink-0 w-72 h-48 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] transition-shadow duration-300 bg-white relative">
+                                <Image
+                                    src={item.url || item.image?.url || item.images?.[0]?.url || '/img/Chu A tach nen.png'}
+                                    alt="Gallery Marquee"
+                                    fill
+                                    className="object-cover hover:scale-105 transition-transform duration-500"
+                                    sizes="288px"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Featured Gallery Section - Full Width Product Collection */}
+            <section className="w-full overflow-x-hidden bg-white py-0 px-0 pb-20 relative">
+                <div className="w-full px-4 sm:px-6 lg:px-8">
+                    <h1 className="text-5xl font-bold mb-8 text-center text-black py-2 mt-8">Collections</h1>
+
+                    {/* Filter Buttons */}
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                        <button
+                            onClick={() => setType('BlackWhite')}
+                            className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'BlackWhite'
+                                    ? 'border-black bg-black text-white'
+                                    : 'border-black text-black hover:bg-black hover:text-white'
+                                }`}
+                        >
+                            Black & White Tattoo
+                        </button>
+                        <button
+                            onClick={() => setType('Color')}
+                            className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'Color'
+                                    ? 'border-black bg-black text-white'
+                                    : 'border-black text-black hover:bg-black hover:text-white'
+                                }`}
+                        >
+                            Color Tattoo
+                        </button>
+                        <button
+                            onClick={() => setType('All')}
+                            className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'All'
+                                    ? 'border-black bg-black text-white'
+                                    : 'border-black text-black hover:bg-black hover:text-white'
+                                }`}
+                        >
+                            All Designs
+                        </button>
+                    </div>
+
+                    {loading ? (
+                        <TattooGridSkeleton count={10} />
+                    ) : filtered.length === 0 ? (
+                        <div className="text-center py-20">
+                            <p className="text-gray-600 text-xl">No designs found. Try adjusting your filters.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {filtered.map((product: any, idx: number) => (
+                                <div
+                                    key={product.id || idx}
+                                    className="group relative overflow-hidden cursor-pointer h-[400px] sm:h-[450px] md:h-[500px] rounded-lg"
+                                    onClick={() => setSelectedProduct(product)}
+                                >
+                                    <Image
+                                        src={product.image?.url || product.images?.[0]?.url || product.images?.[0] || '/img/Chu A tach nen.png'}
+                                        alt={product.name}
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition duration-700 ease-in-out"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                    />
+
+                                    {/* Gradient Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+
+                                    {/* View Button (Centered) */}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-90 group-hover:scale-100">
+                                        <span className="px-8 py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-full font-bold tracking-widest hover:bg-white hover:text-black transition-colors">
+                                            VIEW
+                                        </span>
+                                    </div>
+
+                                    {/* Content (Bottom) */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                        <div className="overflow-hidden">
+                                            <div className="flex flex-wrap gap-2 mb-2 opacity-0 group-hover:opacity-100 transform translate-y-full group-hover:translate-y-0 transition-all duration-500 delay-75">
+                                                {(Array.isArray(product.style)
+                                                    ? product.style
+                                                    : (product.style || '').split(/(?=[A-Z])/).filter((s: string) => s.trim().length > 0)
+                                                ).map((style: string, i: number) => (
+                                                    <span key={i} className="text-[10px] font-bold text-black bg-white/90 px-2 py-1 rounded-sm uppercase tracking-widest">
+                                                        {style}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                                                {product.name}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* Modal for Product Details */}
+            {selectedProduct && (
+                <ModalProduct
+                    product={selectedProduct}
+                    onClose={() => setSelectedProduct(null)}
+                />
+            )}
+
+            <Footer id="main-footer" />
         </div>
-      </section>
-
-      {/* Detail Modal */}
-      <ModalProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-
-      <Footer id="main-footer" />
-    </div>
-  )
+    )
 }

@@ -4,7 +4,6 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3
 
 class ApiClient {
   private client: AxiosInstance;
-  private token: string | null = null;
 
   constructor() {
     this.client = axios.create({
@@ -13,42 +12,6 @@ class ApiClient {
         'Content-Type': 'application/json',
       },
     });
-
-    // Add token to requests if it exists
-    this.client.interceptors.request.use((config) => {
-      if (this.token) {
-        config.headers.Authorization = `Bearer ${this.token}`;
-      }
-      return config;
-    });
-
-    // Load token from localStorage on initialization
-    if (typeof window !== 'undefined') {
-      this.token = localStorage.getItem('authToken');
-    }
-  }
-
-  setToken(token: string) {
-    this.token = token;
-    localStorage.setItem('authToken', token);
-  }
-
-  clearToken() {
-    this.token = null;
-    localStorage.removeItem('authToken');
-  }
-
-  // Auth endpoints
-  async login(email: string, password: string) {
-    const response = await this.client.post('/api/auth/login', { email, password });
-    if (response.data.token) {
-      this.setToken(response.data.token);
-    }
-    return response.data;
-  }
-
-  async register(email: string, password: string, fullName: string) {
-    return this.client.post('/api/auth/register', { email, password, fullName });
   }
 
   // Categories endpoints

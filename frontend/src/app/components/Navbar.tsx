@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import './navbar.css'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -62,7 +63,7 @@ export default function Navbar() {
 
             {/* Brand centered absolute */}
             <div className="brand-center pointer-events-none" id="nav-brand">
-              <Link href="/" className="brand-text pointer-events-auto text-white font-bold text-2xl lg:text-3xl relative nav-brand-text">
+              <Link href="/" className="brand-text pointer-events-auto font-bold text-2xl lg:text-3xl relative nav-brand-text">
                 <span className="relative z-10 text-shimmer">A LITTLE INK</span>
                 <span
                   id="logo-mover"
@@ -88,12 +89,20 @@ export default function Navbar() {
               {/* Booking Button */}
               <button
                 onClick={handleBookingClick}
-                className="hidden sm:flex items-center gap-2 px-6 py-2 text-white rounded-lg hover:bg-white hover:text-black transition font-semibold nav-booking-btn"
+                className="hidden sm:flex items-center gap-2 px-6 py-2 text-white transition font-semibold nav-booking-btn"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hidden group-hover:block">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" fill="currentColor" />
                 </svg>
-                Booking
+                <span className="contact-text">
+                  <span style={{ '--i': 0 } as React.CSSProperties}>C</span>
+                  <span style={{ '--i': 1 } as React.CSSProperties}>O</span>
+                  <span style={{ '--i': 2 } as React.CSSProperties}>N</span>
+                  <span style={{ '--i': 3 } as React.CSSProperties}>T</span>
+                  <span style={{ '--i': 4 } as React.CSSProperties}>A</span>
+                  <span style={{ '--i': 5 } as React.CSSProperties}>C</span>
+                  <span style={{ '--i': 6 } as React.CSSProperties}>T</span>
+                </span>
               </button>
             </div>
           </div>
@@ -102,12 +111,12 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="fixed top-16 left-0 right-0 bg-black/95 z-40 lg:hidden">
+        <div className="fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-lg z-40 lg:hidden">
           <div className="flex flex-col gap-4 p-6 text-white">
-            <Link href="/gallery" className="hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Gallery</Link>
-            <Link href="/artists" className="hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Artists</Link>
-            <Link href="/classes" className="hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Classes</Link>
-            <Link href="/blog" className="hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+            <Link href="/gallery" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Gallery</Link>
+            <Link href="/artists" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Artists</Link>
+            <Link href="/classes" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Classes</Link>
+            <Link href="/blog" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
           </div>
         </div>
       )}

@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   title: 'A Little Ink - Tattoo Studio',
   description: 'Professional tattoo studio with world-class artists',
   icons: {
-  icon: '/img/Chu A tach nen.png',
-  shortcut: '/img/Chu A tach nen.png',
-  apple: '/img/Chu A tach nen.png',
-},
+    icon: '/img/chu A do.png',
+    shortcut: '/img/chu A do.png',
+    apple: '/img/chu A do.png',
+  },
 }
 
 export default function RootLayout({
