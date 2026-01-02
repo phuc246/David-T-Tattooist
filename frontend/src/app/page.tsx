@@ -21,7 +21,7 @@ export default function Home() {
   const [homepageData, setHomepageData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selectedTattoo, setSelectedTattoo] = useState<any>(null)
-  const [shouldLoadBookingVideo, setShouldLoadBookingVideo] = useState(false)
+  const [selectedTattoo, setSelectedTattoo] = useState<any>(null)
   const bookingRef = useRef<HTMLElement>(null)
 
   // Fetch data from Hygraph on mount
@@ -59,9 +59,6 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search)
       if (urlParams.get('scroll') === 'booking' && bookingRef.current) {
-        // Pre-trigger video loading if we know we're going there
-        setShouldLoadBookingVideo(true)
-
         // Wait a bit for other elements (images, videos) to settle
         const timer = setTimeout(() => {
           bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -82,29 +79,10 @@ export default function Home() {
 
     window.addEventListener('scroll', handleScroll)
 
-    // Intersection Observer for lazy loading booking video
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !shouldLoadBookingVideo) {
-            setShouldLoadBookingVideo(true)
-          }
-        })
-      },
-      { rootMargin: '400px' } // Start loading 400px before section is visible
-    )
-
-    if (bookingRef.current) {
-      observer.observe(bookingRef.current)
-    }
-
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      if (bookingRef.current) {
-        observer.unobserve(bookingRef.current)
-      }
     }
-  }, [shouldLoadBookingVideo])
+  }, [])
 
   // Animation Variants - Simplified for performance
   const fadeInUp = {
@@ -152,7 +130,6 @@ export default function Home() {
             muted
             playsInline
             preload="auto"
-            poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
             disableRemotePlayback
             className="w-full h-screen object-cover"
           >
@@ -530,9 +507,8 @@ export default function Home() {
 
       {/* Discover Tattoo Artistry Section - full screen with booking form filling height */}
       <section ref={bookingRef} id="booking" className="relative min-h-screen w-full overflow-x-hidden bg-black/85 scroll-section flex items-center py-12 lg:py-0">
-        {/* Video Background or Image Fallback - Lazy Loaded */}
         {
-          shouldLoadBookingVideo && homepageData?.bookingVideo?.url ? (
+          homepageData?.bookingVideo?.url ? (
             <video
               key={homepageData.bookingVideo.url}
               autoPlay
@@ -540,7 +516,6 @@ export default function Home() {
               muted
               playsInline
               preload="auto"
-              poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
               disableRemotePlayback
               className="absolute inset-0 w-full h-full object-cover opacity-30"
             >
