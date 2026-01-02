@@ -29,6 +29,15 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
       : ['/img/Chu A tach nen.png']
   const hasThumbnails = imgs.length > 1
 
+  const handleGetArtClick = () => {
+    // For mobile reliability, we use window.location.href to force a scroll trigger
+    // if simple navigation fails. 
+    onClose() // Close modal first
+    setTimeout(() => {
+      window.location.href = '/#booking'
+    }, 100)
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 sm:p-4" onClick={onClose}>
@@ -117,7 +126,7 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
               <div className="flex-1 py-4">
                 <div className="prose prose-base max-w-none text-gray-700 text-justify leading-relaxed">
                   <p className="text-base sm:text-lg">
-                    {product.description || 'Beautiful tattoo design showcasing unique artistry and craftsmanship. Each line and detail is carefully crafted to create a stunning piece of body art.'}
+                    {product.description || 'Beautiful tattoo design showcasing unique artistry and craftsmanship. Mỗi nét vẽ và chi tiết đều được chăm chút kỹ lưỡng để tạo nên một tác phẩm nghệ thuật cơ thể tuyệt đẹp.'}
                   </p>
                 </div>
               </div>
@@ -125,15 +134,15 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
               {/* Bottom Section: Buttons - Always at bottom */}
               <div className="space-y-3 pt-4 border-t border-gray-100">
                 <div className="flex gap-3">
-                  <Link
-                    href="/#booking"
+                  <button
+                    onClick={handleGetArtClick}
                     className="flex-1 px-6 py-4 bg-black text-white hover:bg-gray-800 rounded-xl font-bold text-base sm:text-lg text-center transition transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                   >
                     <span>Get This Art</span>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </Link>
+                  </button>
 
                   <a
                     href="https://www.instagram.com/alittleink.skin/"
