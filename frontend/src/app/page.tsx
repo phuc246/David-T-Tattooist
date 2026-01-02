@@ -21,7 +21,6 @@ export default function Home() {
   const [homepageData, setHomepageData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selectedTattoo, setSelectedTattoo] = useState<any>(null)
-  const [selectedTattoo, setSelectedTattoo] = useState<any>(null)
   const bookingRef = useRef<HTMLElement>(null)
 
   // Fetch data from Hygraph on mount
