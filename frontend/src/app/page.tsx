@@ -32,19 +32,37 @@ export default function Home() {
           getFeaturedTattoos(),
           getHomepageData()
         ])
-        setArtists(artistsData.slice(0, 3)) // Get first 3 artists
-        setFeaturedTattoos(tattoosData.slice(0, 8)) // Get first 8 featured tattoos
+        setArtists(artistsData)
+        setFeaturedTattoos(tattoosData)
         setHomepageData(homeData)
       } catch (error) {
-        console.error('Error fetching data from Hygraph:', error)
+        console.error('Error fetching homepage data:', error)
       } finally {
         setLoading(false)
       }
     }
 
     fetchData()
+  }, [])
 
-    // Handle scroll for hero logo animation
+  // Handle scroll to booking parameter for Safari/iOS reliability
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.get('scroll') === 'booking' && bookingRef.current) {
+        // Wait a bit for other elements (images, videos) to settle
+        const timer = setTimeout(() => {
+          bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          // Clean up URL without reloading
+          const newUrl = window.location.pathname
+          window.history.replaceState({}, '', newUrl)
+        }, 1000)
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [loading])
+  // Handle scroll for hero logo animation and booking video lazy loading
+  useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY)
     }
@@ -73,7 +91,7 @@ export default function Home() {
         observer.unobserve(bookingRef.current)
       }
     }
-  }, [])
+  }, [shouldLoadBookingVideo])
 
   // Animation Variants
   const fadeInUp = {

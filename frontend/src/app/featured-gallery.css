@@ -93,17 +93,24 @@ html.dark .vertical-divider-sm {
 }
 
 .marquee-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  width: -webkit-max-content;
+  width: -moz-max-content;
   width: max-content;
-  animation: marquee 30s linear infinite;
+  -webkit-animation: marquee_main 30s linear infinite;
+  animation: marquee_main 30s linear infinite;
   perspective: 1000px;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
 .marquee-item {
+  -ms-flex-negative: 0;
   flex-shrink: 0;
   white-space: nowrap;
   background: linear-gradient(90deg,
@@ -116,6 +123,9 @@ html.dark .vertical-divider-sm {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  -webkit-animation:
+    textGradient 3s ease infinite,
+    glow 2s ease-in-out infinite;
   animation:
     textGradient 3s ease infinite,
     glow 2s ease-in-out infinite;
@@ -125,6 +135,18 @@ html.dark .vertical-divider-sm {
 }
 
 /* Gradient background shift */
+@-webkit-keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @keyframes gradientShift {
 
   0%,
@@ -138,6 +160,18 @@ html.dark .vertical-divider-sm {
 }
 
 /* Text gradient animation */
+@-webkit-keyframes textGradient {
+
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+
+  50% {
+    background-position: 200% center;
+  }
+}
+
 @keyframes textGradient {
 
   0%,
@@ -151,6 +185,18 @@ html.dark .vertical-divider-sm {
 }
 
 /* Glow pulsing effect */
+@-webkit-keyframes glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.8)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+  }
+}
+
 @keyframes glow {
 
   0%,
@@ -164,12 +210,26 @@ html.dark .vertical-divider-sm {
 }
 
 /* Marquee scroll animation */
-@keyframes marquee {
+@-webkit-keyframes marquee_main {
   0% {
+    -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
 
   100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee_main {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
     transform: translate3d(-50%, 0, 0);
   }
 }

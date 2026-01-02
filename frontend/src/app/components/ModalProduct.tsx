@@ -34,7 +34,7 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
     // if simple navigation fails. 
     onClose() // Close modal first
     setTimeout(() => {
-      window.location.href = '/#booking'
+      window.location.href = '/?scroll=booking'
     }, 100)
   }
 
