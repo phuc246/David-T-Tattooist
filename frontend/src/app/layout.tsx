@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://david-t-tattooist.vercel.app/'), // Replace with your actual domain when live
   title: 'David T Tattooist - Professional Tattoo Studio',
   description: 'Experience world-class tattoo artistry in Saigon, Vietnam. Custom designs, professional training, and expert artists.',
   icons: {
@@ -12,15 +13,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'David T Tattooist - Professional Tattoo Studio',
-    description: 'Experience world-class tattoo artistry in Saigon, Vietnam.',
-    url: 'https://alittleink.com',
+    description: 'Experience world-class tattoo artistry in Saigon, Vietnam. Custom designs, professional training, and expert artists.',
+    url: '/',
     siteName: 'David T Tattooist',
     images: [
       {
         url: '/img/firstlook.png',
         width: 1200,
         height: 630,
-        alt: 'David T Tattooist Studio Preview',
+        alt: 'David T Tattooist - Tattoo Studio Preview',
       },
     ],
     locale: 'vi_VN',
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'David T Tattooist - Professional Tattoo Studio',
-    description: 'Experience world-class tattoo artistry in Saigon, Vietnam.',
+    description: 'Experience world-class tattoo artistry in Saigon, Vietnam. Custom designs, professional training, and expert artists.',
     images: ['/img/firstlook.png'],
   },
 }
