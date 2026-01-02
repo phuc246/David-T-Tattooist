@@ -15,6 +15,7 @@ import { ArtistCardSkeleton, TattooGridSkeleton } from './components/SkeletonLoa
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0)
+
   const [artists, setArtists] = useState<any[]>([])
   const [featuredTattoos, setFeaturedTattoos] = useState<any[]>([])
   const [homepageData, setHomepageData] = useState<any>(null)
@@ -61,6 +62,7 @@ export default function Home() {
       }
     }
   }, [loading])
+
   // Handle scroll for hero logo animation and booking video lazy loading
   useEffect(() => {
     const handleScroll = () => {
@@ -93,20 +95,20 @@ export default function Home() {
     }
   }, [shouldLoadBookingVideo])
 
-  // Animation Variants
+  // Animation Variants - Simplified for performance
   const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   }
 
   const slideInLeft = {
-    hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, x: -60 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
   }
 
   const slideInRight = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, x: 60 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
   }
 
   const staggerContainer = {
@@ -145,10 +147,12 @@ export default function Home() {
           </video>
         ) : (
           <div className="w-full h-screen bg-black flex items-center justify-center">
-            <img
+            <Image
               src="/img/Chu A tach nen.png"
               alt="Background"
               className="w-64 h-auto opacity-50"
+              width={256}
+              height={256}
             />
           </div>
         )}
@@ -157,7 +161,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/20 z-10"></div>
 
         {/* Content - Center Logo (matching legacy positioning) */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center">
+        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
           <Image
             src="/img/Chu A tach nen.png"
             alt="A Little Ink Logo"
@@ -168,9 +172,10 @@ export default function Home() {
             className="w-32 h-auto transition-all duration-1000"
             style={{
               transform: scrollY > 100
-                ? `translateY(${Math.min(scrollY - 100, window.innerHeight * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
+                ? `translateY(${Math.min(scrollY - 100, (typeof window !== 'undefined' ? window.innerHeight : 800) * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
                 : 'none',
-              opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1
+              opacity: scrollY > 100 ? Math.max(0, 1 - (scrollY - 100) / 500) : 1,
+              willChange: "transform, opacity"
             }}
           />
         </div>
@@ -207,8 +212,9 @@ export default function Home() {
                 <motion.div
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, margin: "-100px" }}
+                  viewport={{ once: false, amount: 0.1, margin: "-100px" }}
                   variants={fadeInUp}
+                  style={{ willChange: "transform, opacity" }}
                   className="space-y-4 sm:space-y-6 text-white"
                 >
                   <h2 className="text-4xl lg:text-5xl font-bold hover:scale-105 transition-transform duration-300 cursor-default">
@@ -232,8 +238,9 @@ export default function Home() {
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: false, amount: 0.1 }}
             transition={{ duration: 0.6 }}
+            style={{ willChange: "transform, opacity" }}
             className="text-4xl font-bold text-center px-4 py-8 text-black"
           >
             Artists
@@ -258,8 +265,9 @@ export default function Home() {
                   <motion.div
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: false, margin: "-100px" }}
+                    viewport={{ once: false, amount: 0.1, margin: "-100px" }}
                     variants={index % 2 === 0 ? slideInLeft : slideInRight}
+                    style={{ willChange: "transform, opacity" }}
                     className="w-full lg:w-2/3 lg:h-[600px] h-[500px] overflow-hidden flex-shrink-0 relative"
                   >
                     <Image
@@ -275,8 +283,9 @@ export default function Home() {
                   <motion.div
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: false, margin: "-100px" }}
+                    viewport={{ once: false, amount: 0.1, margin: "-100px" }}
                     variants={index % 2 === 0 ? slideInRight : slideInLeft}
+                    style={{ willChange: "transform, opacity" }}
                     className="w-full lg:w-1/2 flex flex-col justify-between p-8 lg:px-8 py-0 bg-white"
                   >
                     {/* Content ở trên */}
@@ -333,8 +342,9 @@ export default function Home() {
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: false, amount: 0.1 }}
             transition={{ duration: 0.6 }}
+            style={{ willChange: "transform, opacity" }}
             className="text-5xl md:text-6xl font-black text-center px-4 py-12 text-black uppercase tracking-tighter"
           >
             Top Collections
@@ -346,8 +356,9 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, amount: 0.1 }}
               transition={{ duration: 0.6 }}
+              style={{ willChange: "transform, opacity" }}
               className="px-4 flex items-center gap-4 mb-8"
             >
               <div className="h-8 w-1 bg-black flex-shrink-0"></div>
@@ -362,7 +373,8 @@ export default function Home() {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, margin: "-50px" }}
+                viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+                style={{ willChange: "transform, opacity" }}
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 w-full max-w-full overflow-hidden"
               >
                 {featuredTattoos.filter((t: any) => t.type === 'BlackWhite').map((tattoo: any, idx: number) => (
@@ -420,8 +432,9 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, amount: 0.1 }}
               transition={{ duration: 0.6 }}
+              style={{ willChange: "transform, opacity" }}
               className="px-4 flex items-center gap-4 mb-8"
             >
               <div className="h-8 w-1 bg-black flex-shrink-0"></div>
@@ -436,7 +449,8 @@ export default function Home() {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, margin: "-50px" }}
+                viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+                style={{ willChange: "transform, opacity" }}
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 w-full max-w-full overflow-hidden"
               >
                 {featuredTattoos.filter((t: any) => t.type === 'Color').map((tattoo: any, idx: number) => (
@@ -536,8 +550,9 @@ export default function Home() {
                 <motion.div
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false }}
+                  viewport={{ once: false, amount: 0.1 }}
                   variants={slideInLeft}
+                  style={{ willChange: "transform, opacity" }}
                   className="space-y-4 sm:space-y-6 text-white"
                 >
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">Discover Tattoo Artistry With Us</h2>
@@ -555,8 +570,9 @@ export default function Home() {
                 <motion.div
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false }}
+                  viewport={{ once: false, amount: 0.1 }}
                   variants={slideInRight}
+                  style={{ willChange: "transform, opacity" }}
                   className="w-full max-w-md"
                 >
                   <BookingForm className="w-full" />

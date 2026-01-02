@@ -10,6 +10,7 @@ import './gallery.css'
 import '../featured-gallery.css'
 import { getTattooDesigns, getPageContent } from '../../../lib/queries'
 import { TattooGridSkeleton } from '../components/SkeletonLoader'
+import { motion } from 'framer-motion'
 
 export default function GalleryPage() {
     const [products, setProducts] = useState<any[]>([])
@@ -307,25 +308,46 @@ export default function GalleryPage() {
             </section>
 
             {/* Horizontal Scrolling Image Marquee */}
-            <section className="w-full overflow-hidden py-8 bg-transparent">
-                <div className="marquee-wrapper !bg-transparent">
-                    <div className="marquee-content gap-8 py-4">
-                        {/* Duplicate the list to ensure seamless scrolling */}
+            <section className="w-full overflow-hidden py-14 bg-black relative shadow-[0_10px_50px_rgba(0,0,0,0.5)]">
+                {/* Thin border lines like camera film */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-white/10"></div>
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-white/10"></div>
+
+                <div className="relative flex overflow-x-hidden py-2">
+                    <motion.div
+                        className="flex whitespace-nowrap gap-10"
+                        animate={{
+                            x: [0, -2880],
+                        }}
+                        transition={{
+                            x: {
+                                repeat: Infinity,
+                                repeatType: "loop",
+                                duration: 30,
+                                ease: "linear",
+                            },
+                        }}
+                    >
+                        {/* Ensure we have a sufficient number of items for seamless loop */}
                         {(pageContent?.galleryMarqueeImages?.length > 0
-                            ? [...pageContent.galleryMarqueeImages, ...pageContent.galleryMarqueeImages]
-                            : [...products, ...products].slice(0, 20)
+                            ? [...pageContent.galleryMarqueeImages, ...pageContent.galleryMarqueeImages, ...pageContent.galleryMarqueeImages, ...pageContent.galleryMarqueeImages]
+                            : [...products, ...products, ...products, ...products].slice(0, 30)
                         ).map((item: any, idx: number) => (
-                            <div key={idx} className="marquee-item flex-shrink-0 w-72 h-48 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] transition-shadow duration-300 bg-white relative">
+                            <div key={idx} className="flex-shrink-0 w-64 h-40 sm:w-80 sm:h-52 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all duration-500 bg-zinc-900 relative group marquee-card-glow">
                                 <Image
                                     src={item.url || item.image?.url || item.images?.[0]?.url || '/img/Chu A tach nen.png'}
                                     alt="Gallery Marquee"
                                     fill
-                                    className="object-cover hover:scale-105 transition-transform duration-500"
-                                    sizes="288px"
+                                    className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                                    sizes="(max-width: 640px) 256px, 320px"
+                                    priority={idx < 8}
                                 />
+                                {/* Overlay for flickering/glowing effect */}
+                                <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/20 transition-colors pointer-events-none rounded-xl"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-transparent transition-all"></div>
                             </div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -339,8 +361,8 @@ export default function GalleryPage() {
                         <button
                             onClick={() => setType('BlackWhite')}
                             className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'BlackWhite'
-                                    ? 'border-black bg-black text-white'
-                                    : 'border-black text-black hover:bg-black hover:text-white'
+                                ? 'border-black bg-black text-white'
+                                : 'border-black text-black hover:bg-black hover:text-white'
                                 }`}
                         >
                             Black & White Tattoo
@@ -348,8 +370,8 @@ export default function GalleryPage() {
                         <button
                             onClick={() => setType('Color')}
                             className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'Color'
-                                    ? 'border-black bg-black text-white'
-                                    : 'border-black text-black hover:bg-black hover:text-white'
+                                ? 'border-black bg-black text-white'
+                                : 'border-black text-black hover:bg-black hover:text-white'
                                 }`}
                         >
                             Color Tattoo
@@ -357,8 +379,8 @@ export default function GalleryPage() {
                         <button
                             onClick={() => setType('All')}
                             className={`px-8 py-3 rounded-md font-semibold transition border-2 ${type === 'All'
-                                    ? 'border-black bg-black text-white'
-                                    : 'border-black text-black hover:bg-black hover:text-white'
+                                ? 'border-black bg-black text-white'
+                                : 'border-black text-black hover:bg-black hover:text-white'
                                 }`}
                         >
                             All Designs

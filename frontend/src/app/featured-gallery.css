@@ -84,29 +84,33 @@ html.dark .vertical-divider-sm {
   overflow: hidden;
   background: linear-gradient(90deg, #000000, #070707, #000000);
   background-size: 200% 100%;
+  -webkit-animation: gradientShift 10s ease infinite;
   animation: gradientShift 10s ease infinite;
   padding: 1.5rem 0;
   position: relative;
   box-shadow:
     inset 0 -2px 20px rgba(255, 255, 255, 0.1),
     0 5px 30px rgba(0, 0, 0, 0.5);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .marquee-content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  -webkit-animation: marquee_main 30s linear infinite;
-  animation: marquee_main 30s linear infinite;
+  -webkit-animation: marquee_main 40s linear infinite;
+  animation: marquee_main 40s linear infinite;
   perspective: 1000px;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  gap: 2rem;
 }
 
 .marquee-item {
@@ -132,6 +136,8 @@ html.dark .vertical-divider-sm {
   animation-delay: calc(var(--item-index, 0) * 0.1s);
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
   transform-style: preserve-3d;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 /* Gradient background shift */

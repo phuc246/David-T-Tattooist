@@ -43,7 +43,7 @@ body {
 .marquee-wrapper {
   width: 100%;
   overflow: hidden;
-  background-color: black;
+  background-color: transparent;
   padding: 1rem 0;
   position: relative;
   -webkit-transform: translate3d(0, 0, 0);
@@ -51,19 +51,21 @@ body {
 }
 
 .marquee-content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  -webkit-animation: marquee_on_safari 30s linear infinite;
-  animation: marquee_on_safari 30s linear infinite;
+  -webkit-animation: marquee_on_safari 40s linear infinite;
+  animation: marquee_on_safari 40s linear infinite;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  gap: 2rem;
+  /* Consistent gap for Safari */
 }
 
 .marquee-item {
@@ -71,7 +73,9 @@ body {
   flex-shrink: 0;
   white-space: nowrap;
   /* Safari fix: ensure consistent item size */
-  display: inline-block;
+  display: block;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 @-webkit-keyframes marquee_on_safari {
@@ -95,5 +99,65 @@ body {
   100% {
     -webkit-transform: translate3d(-50%, 0, 0);
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Nháy Viền (Flickering Border Glow) Effect */
+.marquee-card-glow {
+  border: 2px solid rgba(255, 170, 0, 0.3);
+  position: relative;
+  box-shadow: 0 0 15px rgba(255, 150, 0, 0.1);
+  animation: border-flicker 5s infinite;
+}
+
+@keyframes border-flicker {
+
+  0%,
+  100% {
+    border-color: rgba(255, 170, 0, 0.2);
+    box-shadow: 0 0 10px rgba(255, 150, 0, 0.1);
+  }
+
+  5% {
+    border-color: rgba(255, 170, 0, 0.8);
+    box-shadow: 0 0 25px rgba(255, 170, 0, 0.4);
+  }
+
+  10% {
+    border-color: rgba(255, 170, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 150, 0, 0.2);
+  }
+
+  15% {
+    border-color: rgba(255, 170, 0, 0.9);
+    box-shadow: 0 0 30px rgba(255, 170, 0, 0.5);
+  }
+
+  20% {
+    border-color: rgba(255, 170, 0, 0.2);
+    box-shadow: 0 0 10px rgba(255, 150, 0, 0.1);
+  }
+
+  50% {
+    border-color: rgba(255, 170, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.2);
+  }
+
+  55% {
+    border-color: rgba(255, 200, 0, 1);
+    box-shadow: 0 0 35px rgba(255, 200, 0, 0.6);
+  }
+
+  60% {
+    border-color: rgba(255, 170, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 150, 0, 0.2);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .marquee-item {
+    width: 256px !important;
+    height: 160px !important;
   }
 }
