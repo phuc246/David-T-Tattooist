@@ -307,7 +307,7 @@ export default function BlogPage() {
               >
                 <p className="text-zinc-500 mb-6 uppercase tracking-[0.2em] text-xs font-bold">Have a specific vision?</p>
                 <Link
-                  href="/#booking"
+                  href="/?scroll=booking"
                   className="group relative inline-flex items-center justify-center px-12 py-5 bg-black text-white hover:bg-zinc-800 rounded-full font-black text-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl overflow-hidden"
                 >
                   <span className="relative z-10">Contact Us</span>
@@ -371,7 +371,7 @@ export default function BlogPage() {
 
             <div className="mt-8 pt-8 border-t-2 border-gray-200 flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link
-                href="/#booking"
+                href="/?scroll=booking"
                 className="px-10 py-4 bg-black text-white hover:bg-gray-800 rounded-lg font-bold text-xl transition transform hover:scale-105 shadow-lg"
               >
                 Contact Us

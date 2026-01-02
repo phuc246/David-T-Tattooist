@@ -301,7 +301,7 @@ export default function ClassesPage() {
 
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                                 <Link
-                                    href="/#booking"
+                                    href="/?scroll=booking"
                                     className="group/btn px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition transform hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-3 relative overflow-hidden"
                                 >
                                     <span className="relative z-10">Get Your Spot Now</span>

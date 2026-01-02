@@ -26,24 +26,32 @@ export default function Home() {
 
   // Fetch data from Hygraph on mount
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchHomeData = async () => {
       try {
-        const [artistsData, tattoosData, homeData] = await Promise.all([
+        const homeData = await getHomepageData()
+        setHomepageData(homeData)
+      } catch (error) {
+        console.error('Error fetching home data:', error)
+      }
+    }
+
+    const fetchRemainingData = async () => {
+      try {
+        const [artistsData, tattoosData] = await Promise.all([
           getArtists(),
-          getFeaturedTattoos(),
-          getHomepageData()
+          getFeaturedTattoos()
         ])
         setArtists(artistsData)
         setFeaturedTattoos(tattoosData)
-        setHomepageData(homeData)
       } catch (error) {
-        console.error('Error fetching homepage data:', error)
+        console.error('Error fetching artists/tattoos:', error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchData()
+    fetchHomeData()
+    fetchRemainingData()
   }, [])
 
   // Handle scroll to booking parameter for Safari/iOS reliability
@@ -51,13 +59,16 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search)
       if (urlParams.get('scroll') === 'booking' && bookingRef.current) {
+        // Pre-trigger video loading if we know we're going there
+        setShouldLoadBookingVideo(true)
+
         // Wait a bit for other elements (images, videos) to settle
         const timer = setTimeout(() => {
           bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
           // Clean up URL without reloading
           const newUrl = window.location.pathname
           window.history.replaceState({}, '', newUrl)
-        }, 1000)
+        }, 1500)
         return () => clearTimeout(timer)
       }
     }
@@ -80,7 +91,7 @@ export default function Home() {
           }
         })
       },
-      { rootMargin: '200px' } // Start loading 200px before section is visible
+      { rootMargin: '400px' } // Start loading 400px before section is visible
     )
 
     if (bookingRef.current) {
@@ -140,6 +151,9 @@ export default function Home() {
             loop
             muted
             playsInline
+            preload="auto"
+            poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
+            disableRemotePlayback
             className="w-full h-screen object-cover"
           >
             <source src={homepageData.heroVideo.url} type="video/mp4" />
@@ -342,7 +356,7 @@ export default function Home() {
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.1 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             style={{ willChange: "transform, opacity" }}
             className="text-5xl md:text-6xl font-black text-center px-4 py-12 text-black uppercase tracking-tighter"
@@ -356,7 +370,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.1 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6 }}
               style={{ willChange: "transform, opacity" }}
               className="px-4 flex items-center gap-4 mb-8"
@@ -373,7 +387,7 @@ export default function Home() {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+                viewport={{ once: true, margin: "-50px" }}
                 style={{ willChange: "transform, opacity" }}
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 w-full max-w-full overflow-hidden"
               >
@@ -432,7 +446,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.1 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6 }}
               style={{ willChange: "transform, opacity" }}
               className="px-4 flex items-center gap-4 mb-8"
@@ -449,7 +463,7 @@ export default function Home() {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+                viewport={{ once: true, margin: "-50px" }}
                 style={{ willChange: "transform, opacity" }}
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 w-full max-w-full overflow-hidden"
               >
@@ -525,6 +539,9 @@ export default function Home() {
               loop
               muted
               playsInline
+              preload="auto"
+              poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
+              disableRemotePlayback
               className="absolute inset-0 w-full h-full object-cover opacity-30"
             >
               <source src={homepageData.bookingVideo.url} type="video/mp4" />
