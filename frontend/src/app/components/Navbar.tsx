@@ -21,15 +21,22 @@ export default function Navbar() {
 
   const router = useRouter()
   const handleBookingClick = () => {
-    try {
-      // navigate to home booking anchor
-      router.push('/#booking')
-    } catch (e) {
-      // fallback
-      window.location.href = '/#booking'
+    setMobileMenuOpen(false)
+    const targetUrl = '/?scroll=booking'
+
+    // For local dev and different route handling, we check if we're already on home
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname === '/') {
+        // If on home, we can use the router but might need to force a refresh of the param
+        router.push(targetUrl)
+        // If router.push doesn't trigger effect because it's same page, 
+        // the HomeClient's useSearchParams will catch it.
+      } else {
+        // From other pages, window.location.href is extremely reliable for triggering the new page mount + effect
+        window.location.href = targetUrl
+      }
     }
   }
-
 
   return (
     <>
@@ -111,12 +118,20 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-lg z-40 lg:hidden">
-          <div className="flex flex-col gap-4 p-6 text-white">
-            <Link href="/gallery" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Gallery</Link>
-            <Link href="/artists" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Artists</Link>
-            <Link href="/classes" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Classes</Link>
-            <Link href="/blog" className="mobile-menu-link hover:text-gray-300 transition text-sm uppercase tracking-wide" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 lg:hidden overflow-y-auto pt-20">
+          <div className="flex flex-col gap-6 p-8 text-center">
+            <Link href="/" className="text-3xl font-black text-white uppercase tracking-tighter" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link href="/gallery" className="text-3xl font-black text-white uppercase tracking-tighter" onClick={() => setMobileMenuOpen(false)}>Gallery</Link>
+            <Link href="/artists" className="text-3xl font-black text-white uppercase tracking-tighter" onClick={() => setMobileMenuOpen(false)}>Artists</Link>
+            <Link href="/classes" className="text-3xl font-black text-white uppercase tracking-tighter" onClick={() => setMobileMenuOpen(false)}>Classes</Link>
+            <Link href="/blog" className="text-3xl font-black text-white uppercase tracking-tighter" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+            <button
+              onClick={handleBookingClick}
+              className="mt-4 px-10 py-4 bg-white text-black font-black text-2xl rounded-full uppercase tracking-tighter hover:scale-105 transition"
+            >
+              Contact Us
+            </button>
+            <button onClick={() => setMobileMenuOpen(false)} className="mt-8 text-zinc-500 text-xl font-bold">Close</button>
           </div>
         </div>
       )}

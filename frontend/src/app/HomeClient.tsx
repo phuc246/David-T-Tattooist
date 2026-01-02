@@ -4,7 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import { useEffect, useState, useRef } from 'react'
+import { useSearchParams, usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState, useRef, Suspense } from 'react'
 import BookingForm from './components/BookingForm'
 import './featured-gallery.css'
 import ImageZoomModal from './components/ImageZoomModal'
@@ -17,7 +18,7 @@ interface HomeClientProps {
   initialHomepageData: any
 }
 
-export default function HomeClient({
+function HomeContent({
   initialArtists,
   initialFeaturedTattoos,
   initialHomepageData
@@ -27,22 +28,30 @@ export default function HomeClient({
   const [featuredTattoos] = useState(initialFeaturedTattoos)
   const [homepageData] = useState(initialHomepageData)
   const [selectedTattoo, setSelectedTattoo] = useState<any>(null)
+
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const router = useRouter()
+
   const bookingRef = useRef<HTMLElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   // Handle scroll to booking parameter for Safari/iOS reliability
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search)
-      if (urlParams.get('scroll') === 'booking' && bookingRef.current) {
-        const timer = setTimeout(() => {
-          bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          const newUrl = window.location.pathname
-          window.history.replaceState({}, '', newUrl)
-        }, 1500)
-        return () => clearTimeout(timer)
-      }
+    const scrollParam = searchParams.get('scroll')
+    if (scrollParam === 'booking' && bookingRef.current) {
+      const timer = setTimeout(() => {
+        bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+        // Clean up URL without triggering re-render if possible, or use router
+        const params = new URLSearchParams(searchParams.toString())
+        params.delete('scroll')
+        const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+        window.history.replaceState({}, '', newUrl)
+      }, 1000)
+      return () => clearTimeout(timer)
     }
-  }, [])
+  }, [searchParams, pathname])
 
   // Handle scroll for hero logo animation
   useEffect(() => {
@@ -54,6 +63,18 @@ export default function HomeClient({
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  // Force play for Safari/mobile
+  useEffect(() => {
+    if (videoRef.current) {
+      const timer = setTimeout(() => {
+        videoRef.current?.play().catch(error => {
+          console.log("Autoplay was prevented:", error)
+        })
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [homepageData?.heroVideo?.url])
 
   // Animation Variants
   const fadeInUp = {
@@ -91,23 +112,26 @@ export default function HomeClient({
       <Navbar />
 
       {/* Hero Section with Video Background */}
-      <section id="vd_Heading" className="relative">
+      <section id="vd_Heading" className="relative h-screen">
         {homepageData?.heroVideo?.url ? (
           <video
+            ref={videoRef}
             key={homepageData.heroVideo.url}
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
+            poster={homepageData.heroImage?.url || homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
             disableRemotePlayback
-            className="w-full h-screen object-cover"
+            className="w-full h-full object-cover"
+            style={{ willChange: 'transform' }}
           >
             <source src={homepageData.heroVideo.url} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         ) : (
-          <div className="w-full h-screen bg-black flex items-center justify-center">
+          <div className="w-full h-full bg-black flex items-center justify-center">
             <Image
               src="/img/Chu A tach nen.png"
               alt="Background"
@@ -450,7 +474,8 @@ export default function HomeClient({
             loop
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
             disableRemotePlayback
             className="absolute inset-0 w-full h-full object-cover opacity-30"
           >
@@ -519,5 +544,13 @@ export default function HomeClient({
 
       <Footer id="main-footer" />
     </div>
+  )
+}
+
+export default function HomeClient(props: HomeClientProps) {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent {...props} />
+    </Suspense>
   )
 }
