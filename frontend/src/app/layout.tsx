@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     siteName: 'A Little Ink | David T Tattooist',
     images: [
       {
-        url: 'https://david-t-tattooist.vercel.app/img/firstlook.png',
+        url: 'https://david-t-tattooist.vercel.app/img/Chu A tach nen.png',
         width: 1200,
-        height: 630,
-        alt: 'A Little Ink - Tattoo Studio Preview',
+        height: 1200,
+        alt: 'A Little Ink | David T Tattooist',
       },
     ],
     locale: 'vi_VN',
