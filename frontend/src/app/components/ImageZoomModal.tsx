@@ -117,7 +117,7 @@ export default function ImageZoomModal({ imageUrl, altText, isOpen, onClose }: I
                     draggable={false}
                     onError={(e) => {
                         const img = e.target as HTMLImageElement
-                        img.src = '/img/Chu A tach nen.png'
+                        img.src = '/img/chu A do.png'
                     }}
                 />
             </div>

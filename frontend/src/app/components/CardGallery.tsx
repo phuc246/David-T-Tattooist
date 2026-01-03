@@ -20,7 +20,7 @@ export default function CardGallery({ product, onClick }: { product: Product; on
         src={product.image}
         alt={product.name}
         className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-        onError={(e) => {(e.target as HTMLImageElement).src = '/img/Chu A tach nen.png'}}
+        onError={(e) => { (e.target as HTMLImageElement).src = '/img/chu A do.png' }}
       />
       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-end">
         <div className="w-full p-3">

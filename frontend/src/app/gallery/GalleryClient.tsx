@@ -78,7 +78,8 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                             width={256}
                             height={256}
                             priority
-                            className="w-64 h-auto opacity-50"
+                            className="opacity-50"
+                            style={{ width: '16rem', height: 'auto' }}
                         />
                     </div>
                 )}
@@ -86,13 +87,15 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                 <div className="vd-hero-content">
                     <Image
                         id="gallery-hero-logo"
-                        className="logo-hd w-48 transition-all duration-1000"
+                        className="logo-hd transition-all duration-1000"
                         src="/img/Chu A tach nen.png"
                         alt="Brand Logo"
-                        width={192}
-                        height={192}
+                        width={128}
+                        height={128}
                         priority
                         style={{
+                            width: '8rem',
+                            height: 'auto',
                             transform: scrollY > 100
                                 ? `translateY(${Math.min(scrollY - 100, (typeof window !== 'undefined' ? window.innerHeight : 800) * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
                                 : 'none',
@@ -156,7 +159,7 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                                 ) : (
                                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                                         <Image
-                                            src="/img/Chu A tach nen.png"
+                                            src="/img/chu A do.png"
                                             alt="Black & White"
                                             width={128}
                                             height={128}
@@ -194,7 +197,7 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                                 ) : (
                                     <div className="w-full h-[500px] bg-black flex items-center justify-center">
                                         <Image
-                                            src="/img/Chu A tach nen.png"
+                                            src="/img/chu A do.png"
                                             alt="Color Style"
                                             width={128}
                                             height={128}
@@ -222,7 +225,7 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                                 ) : (
                                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                                         <Image
-                                            src="/img/Chu A tach nen.png"
+                                            src="/img/chu A do.png"
                                             alt="Color"
                                             width={128}
                                             height={128}
@@ -259,7 +262,7 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                         ).map((item: any, idx: number) => (
                             <div key={idx} className="flex-shrink-0 w-64 h-40 sm:w-80 sm:h-52 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all duration-500 bg-zinc-900 relative group marquee-card-glow">
                                 <Image
-                                    src={item.url || item.image?.url || item.images?.[0]?.url || '/img/Chu A tach nen.png'}
+                                    src={item.url || item.image?.url || item.images?.[0]?.url || '/img/chu A do.png'}
                                     alt="Gallery Marquee"
                                     fill
                                     className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
@@ -289,7 +292,7 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {filtered.map((product: any, idx: number) => (
                                 <div key={product.id || idx} className="group relative overflow-hidden cursor-pointer h-[400px] sm:h-[450px] md:h-[500px] rounded-lg" onClick={() => setSelectedProduct(product)}>
-                                    <Image src={product.image?.url || product.images?.[0]?.url || product.images?.[0] || '/img/Chu A tach nen.png'} alt={product.name} fill className="object-cover group-hover:scale-110 transition duration-700 ease-in-out" sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw" />
+                                    <Image src={product.image?.url || product.images?.[0]?.url || product.images?.[0] || '/img/chu A do.png'} alt={product.name} fill className="object-cover group-hover:scale-110 transition duration-700 ease-in-out" sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
                                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-90 group-hover:scale-100"><span className="px-8 py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-full font-bold tracking-widest hover:bg-white hover:text-black transition-colors">VIEW</span></div>
                                     <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

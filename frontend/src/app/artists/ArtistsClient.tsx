@@ -107,7 +107,7 @@ export default function ArtistsClient({ initialArtists, initialPageContent }: Ar
                             </div>
                             <div className="flex-1 flex flex-col md:flex-row gap-4 overflow-hidden">
                                 <div className="flex-1 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden relative">
-                                    <img src={artists[portfolioModal].portfolio?.[selectedPortfolioImage]?.url || artists[portfolioModal].portfolio?.[selectedPortfolioImage] || '/img/Chu A tach nen.png'} alt="Portfolio" className="max-w-full max-h-full object-contain cursor-zoom-in" onClick={() => setFullscreenZoom(true)} />
+                                    <img src={artists[portfolioModal].portfolio?.[selectedPortfolioImage]?.url || artists[portfolioModal].portfolio?.[selectedPortfolioImage] || '/img/chu A do.png'} alt="Portfolio" className="max-w-full max-h-full object-contain cursor-zoom-in" onClick={() => setFullscreenZoom(true)} />
                                 </div>
                                 <div className="hidden md:block w-32 lg:w-40 flex-shrink-0 overflow-y-auto">
                                     <div className="grid grid-cols-1 gap-3">
@@ -125,7 +125,7 @@ export default function ArtistsClient({ initialArtists, initialPageContent }: Ar
             )}
 
             {portfolioModal !== null && (
-                <ImageZoomModal imageUrl={artists[portfolioModal].portfolio?.[selectedPortfolioImage]?.url || artists[portfolioModal].portfolio?.[selectedPortfolioImage] || '/img/Chu A tach nen.png'} altText="Portfolio Zoom" isOpen={fullscreenZoom} onClose={() => setFullscreenZoom(false)} />
+                <ImageZoomModal imageUrl={artists[portfolioModal].portfolio?.[selectedPortfolioImage]?.url || artists[portfolioModal].portfolio?.[selectedPortfolioImage] || '/img/chu A do.png'} altText="Portfolio Zoom" isOpen={fullscreenZoom} onClose={() => setFullscreenZoom(false)} />
             )}
 
             <Footer id="main-footer" />

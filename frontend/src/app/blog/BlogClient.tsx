@@ -55,7 +55,7 @@ export default function BlogClient({ initialPosts, initialPageContent }: BlogCli
                         <article className="group relative overflow-hidden rounded-lg border-2 border-gray-200 hover:border-black transition cursor-pointer shadow-lg" onClick={() => setSelectedPost(featuredPost)}>
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                                 <div className="relative h-[400px] lg:h-[500px] overflow-hidden">
-                                    <Image src={featuredPost.image?.url || '/img/Chu A tach nen.png'} alt={featuredPost.title} fill className="object-cover group-hover:scale-110 transition duration-500" sizes="(max-width: 1024px) 100vw, 50vw" />
+                                    <Image src={featuredPost.image?.url || '/img/chu A do.png'} alt={featuredPost.title} fill className="object-cover group-hover:scale-110 transition duration-500" sizes="(max-width: 1024px) 100vw, 50vw" />
                                 </div>
                                 <div className="bg-gray-50 p-8 lg:p-12 flex flex-col justify-center">
                                     <div className="flex gap-2 flex-wrap mb-4">
@@ -81,7 +81,7 @@ export default function BlogClient({ initialPosts, initialPageContent }: BlogCli
                             {otherPosts.map((post: any) => (
                                 <article key={post.id} className="group bg-white rounded-lg overflow-hidden border-2 border-gray-200 hover:border-black transition cursor-pointer h-full flex flex-col shadow-md" onClick={() => setSelectedPost(post)}>
                                     <div className="relative h-64 overflow-hidden">
-                                        <Image src={post.image?.url || '/img/Chu A tach nen.png'} alt={post.title} fill className="object-cover group-hover:scale-110 transition duration-500" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+                                        <Image src={post.image?.url || '/img/chu A do.png'} alt={post.title} fill className="object-cover group-hover:scale-110 transition duration-500" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                                     </div>
                                     <div className="p-6 flex-1 flex flex-col">
                                         <div className="flex gap-2 flex-wrap mb-3">
@@ -131,7 +131,7 @@ export default function BlogClient({ initialPosts, initialPageContent }: BlogCli
                             <button onClick={() => setSelectedPost(null)} className="text-black hover:text-gray-600 text-3xl font-bold">×</button>
                         </div>
                         <div className="relative mb-6 h-[400px] rounded-lg overflow-hidden">
-                            <Image src={selectedPost.image?.url || '/img/Chu A tach nen.png'} alt={selectedPost.title} fill className="object-cover" />
+                            <Image src={selectedPost.image?.url || '/img/chu A do.png'} alt={selectedPost.title} fill className="object-cover" />
                         </div>
                         <div className="prose max-w-none text-gray-700 leading-relaxed"><div dangerouslySetInnerHTML={{ __html: selectedPost.content?.html || '' }} /></div>
                         <div className="mt-8 pt-8 border-t-2 border-gray-200 flex flex-col sm:flex-row items-center justify-center gap-6">

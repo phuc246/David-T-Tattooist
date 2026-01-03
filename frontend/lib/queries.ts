@@ -217,12 +217,14 @@ const GET_HOMEPAGE_DATA = gql`
     homepages(first: 1) {
       heroVideo {
         url
+        mimeType
       }
       welcomeImage {
         url
       }
       bookingVideo {
         url
+        mimeType
       }
     }
   }

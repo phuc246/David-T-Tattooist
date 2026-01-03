@@ -10,11 +10,25 @@ export default async function Home() {
         getHomepageData()
     ])
 
+    // Preload hero video if it exists
+    const heroVideoUrl = homepageData?.heroVideo?.url
+    const heroVideoType = homepageData?.heroVideo?.mimeType || 'video/mp4'
+
     return (
-        <HomeClient
-            initialArtists={artists}
-            initialFeaturedTattoos={featuredTattoos}
-            initialHomepageData={homepageData}
-        />
+        <>
+            {heroVideoUrl && (
+                <link
+                    rel="preload"
+                    href={heroVideoUrl}
+                    as="video"
+                    type={heroVideoType}
+                />
+            )}
+            <HomeClient
+                initialArtists={artists}
+                initialFeaturedTattoos={featuredTattoos}
+                initialHomepageData={homepageData}
+            />
+        </>
     )
 }

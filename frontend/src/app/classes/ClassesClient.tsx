@@ -84,7 +84,7 @@ export default function ClassesClient({ initialCourses, initialPageContent }: Cl
                                                     <Image src={course.image.url} alt={course.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
                                                 ) : (
                                                     <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                                                        <Image src="/img/Chu A tach nen.png" alt={course.title} width={128} height={128} className="opacity-30" />
+                                                        <Image src="/img/chu A do.png" alt={course.title} width={128} height={128} className="opacity-30" />
                                                     </div>
                                                 )}
                                             </div>

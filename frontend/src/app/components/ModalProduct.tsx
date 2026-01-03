@@ -23,10 +23,10 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
   if (!product) return null
 
   const imgs = product.images && product.images.length > 0
-    ? product.images.map((img: any) => typeof img === 'string' ? img : img?.url || '/img/Chu A tach nen.png')
+    ? product.images.map((img: any) => typeof img === 'string' ? img : img?.url || '/img/chu A do.png')
     : product.image
-      ? [typeof product.image === 'string' ? product.image : product.image?.url || '/img/Chu A tach nen.png']
-      : ['/img/Chu A tach nen.png']
+      ? [typeof product.image === 'string' ? product.image : product.image?.url || '/img/chu A do.png']
+      : ['/img/chu A do.png']
   const hasThumbnails = imgs.length > 1
 
   const handleGetArtClick = () => {
@@ -65,7 +65,7 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
                   src={imgs[selected]}
                   alt={product.name}
                   className="w-full h-auto object-contain max-h-[70vh] mx-auto"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/img/Chu A tach nen.png' }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/img/chu A do.png' }}
                 />
               </div>
 
@@ -85,7 +85,7 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
                         src={img}
                         alt={`thumb-${idx}`}
                         className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).src = '/img/Chu A tach nen.png' }}
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/img/chu A do.png' }}
                       />
                     </button>
                   ))}

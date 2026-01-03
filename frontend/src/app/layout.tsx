@@ -4,24 +4,30 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://david-t-tattooist.vercel.app/'), // Replace with your actual domain when live
-  title: 'David T Tattooist - Professional Tattoo Studio',
-  description: 'Experience world-class tattoo artistry in Saigon, Vietnam. Custom designs, professional training, and expert artists.',
+  title: 'A Little Ink | David T Tattooist - Tiệm Xăm Quận 1 & Tattoo Studio Saigon',
+  description: 'A Little Ink by David T Tattooist - Tiệm xăm Quận 1 chuyên nghiệp. Top-rated tattoo studio in Saigon, HCM. Chuyên xăm nghệ thuật, mini tattoo, xăm chân dung & đào tạo nghề.',
+  keywords: [
+    'A Little Ink', 'David T Tattooist', 'Tiệm xăm Quận 1', 'Tattoo Studio Saigon',
+    'Xăm nghệ thuật Quận 1', 'Best tattoo artist HCM', 'Xăm chân dung Sài Gòn',
+    'Mini tattoo Saigon', 'Đào tạo xăm chuyên nghiệp', 'Tattoo District 1',
+    'Xăm hình nghệ thuật', 'Tattoo shop Ho Chi Minh City'
+  ],
   icons: {
     icon: '/img/chu A do.png',
     shortcut: '/img/chu A do.png',
     apple: '/img/chu A do.png',
   },
   openGraph: {
-    title: 'David T Tattooist - Professional Tattoo Studio',
-    description: 'Experience world-class tattoo artistry in Saigon, Vietnam. Custom designs, professional training, and expert artists.',
+    title: 'A Little Ink | David T Tattooist - Tiệm Xăm Quận 1 & Tattoo Studio Saigon',
+    description: 'A Little Ink by David T Tattooist - Tiệm xăm Quận 1 chuyên nghiệp. Top-rated tattoo studio in Saigon, HCM. Chuyên xăm nghệ thuật, mini tattoo, xăm chân dung & đào tạo nghề.',
     url: '/',
-    siteName: 'David T Tattooist',
+    siteName: 'A Little Ink | David T Tattooist',
     images: [
       {
         url: '/img/firstlook.png',
         width: 1200,
         height: 630,
-        alt: 'David T Tattooist - Tattoo Studio Preview',
+        alt: 'A Little Ink - Tattoo Studio Preview',
       },
     ],
     locale: 'vi_VN',
@@ -29,8 +35,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'David T Tattooist - Professional Tattoo Studio',
-    description: 'Experience world-class tattoo artistry in Saigon, Vietnam. Custom designs, professional training, and expert artists.',
+    title: 'A Little Ink | David T Tattooist - Tiệm Xăm Quận 1 & Tattoo Studio Saigon',
+    description: 'A Little Ink by David T Tattooist - Tiệm xăm Quận 1 chuyên nghiệp. Top-rated tattoo studio in Saigon, HCM. Chuyên xăm nghệ thuật, mini tattoo, xăm chân dung & đào tạo nghề.',
     images: ['/img/firstlook.png'],
   },
 }

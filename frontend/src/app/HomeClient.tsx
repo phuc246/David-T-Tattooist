@@ -6,11 +6,16 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState, useRef, Suspense } from 'react'
-import BookingForm from './components/BookingForm'
+import dynamic from 'next/dynamic'
 import './featured-gallery.css'
-import ImageZoomModal from './components/ImageZoomModal'
+const BookingForm = dynamic(() => import('./components/BookingForm'), {
+  ssr: false,
+  loading: () => <div className="h-[600px] bg-gray-50 animate-pulse rounded-lg" />
+})
+const ImageZoomModal = dynamic(() => import('./components/ImageZoomModal'), { ssr: false })
 import { motion } from 'framer-motion'
 import { ArtistCardSkeleton, TattooGridSkeleton } from './components/SkeletonLoader'
+import IntroLoader from './components/IntroLoader'
 
 interface HomeClientProps {
   initialArtists: any[]
@@ -28,6 +33,7 @@ function HomeContent({
   const [featuredTattoos] = useState(initialFeaturedTattoos)
   const [homepageData] = useState(initialHomepageData)
   const [selectedTattoo, setSelectedTattoo] = useState<any>(null)
+  const [isHeroVideoReady, setIsHeroVideoReady] = useState(false)
 
   const searchParams = useSearchParams()
   const pathname = usePathname()
@@ -41,14 +47,14 @@ function HomeContent({
     const scrollParam = searchParams.get('scroll')
     if (scrollParam === 'booking' && bookingRef.current) {
       const timer = setTimeout(() => {
-        bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        bookingRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' })
 
         // Clean up URL without triggering re-render if possible, or use router
         const params = new URLSearchParams(searchParams.toString())
         params.delete('scroll')
         const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
         window.history.replaceState({}, '', newUrl)
-      }, 1000)
+      }, 100)
       return () => clearTimeout(timer)
     }
   }, [searchParams, pathname])
@@ -64,17 +70,34 @@ function HomeContent({
     }
   }, [])
 
-  // Force play for Safari/mobile
+  // Force play for Safari/mobile and handle loader timeout
   useEffect(() => {
-    if (videoRef.current) {
-      const timer = setTimeout(() => {
-        videoRef.current?.play().catch(error => {
-          console.log("Autoplay was prevented:", error)
-        })
-      }, 100)
-      return () => clearTimeout(timer)
+    if (homepageData?.heroVideo?.url) {
+      if (!homepageData.heroVideo.mimeType?.includes('video')) {
+        // If it's an image, ready immediately
+        setIsHeroVideoReady(true)
+      } else if (videoRef.current) {
+        const timer = setTimeout(() => {
+          videoRef.current?.play().catch(error => {
+            console.log("Autoplay was prevented:", error)
+          })
+        }, 100)
+
+        // Safety timeout: if video takes too long (e.g. 10s), show content anyway
+        const safetyTimer = setTimeout(() => {
+          setIsHeroVideoReady(true)
+        }, 10000)
+
+        return () => {
+          clearTimeout(timer)
+          clearTimeout(safetyTimer)
+        }
+      }
+    } else {
+      // No video/image data? ready immediately
+      setIsHeroVideoReady(true)
     }
-  }, [homepageData?.heroVideo?.url])
+  }, [homepageData?.heroVideo?.url, homepageData?.heroVideo?.mimeType])
 
   // Animation Variants
   const fadeInUp = {
@@ -109,35 +132,49 @@ function HomeContent({
 
   return (
     <div className="min-h-screen bg-white">
+      <IntroLoader isLoading={!isHeroVideoReady} />
       <Navbar />
 
       {/* Hero Section with Video Background */}
       <section id="vd_Heading" className="relative h-screen">
         {homepageData?.heroVideo?.url ? (
-          <video
-            ref={videoRef}
-            key={homepageData.heroVideo.url}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            poster={homepageData.heroImage?.url || homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
-            disableRemotePlayback
-            className="w-full h-full object-cover"
-            style={{ willChange: 'transform' }}
-          >
-            <source src={homepageData.heroVideo.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          homepageData.heroVideo.mimeType?.includes('video') ? (
+            <video
+              ref={videoRef}
+              key={homepageData.heroVideo.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              onPlaying={() => setIsHeroVideoReady(true)}
+              disableRemotePlayback
+              className="w-full h-full object-cover"
+              style={{ willChange: 'transform' }}
+            >
+              <source src={homepageData.heroVideo.url} type={homepageData.heroVideo.mimeType} />
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <div className="w-full h-full relative">
+              <Image
+                src={homepageData.heroVideo.url}
+                alt="Hero Background"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )
         ) : (
           <div className="w-full h-full bg-black flex items-center justify-center">
             <Image
               src="/img/Chu A tach nen.png"
               alt="Background"
-              className="w-64 h-auto opacity-50"
+              className="opacity-50"
               width={256}
               height={256}
+              style={{ width: '16rem', height: 'auto' }}
             />
           </div>
         )}
@@ -304,7 +341,7 @@ function HomeContent({
         <div className="marquee-wrapper">
           <div className="marquee-content">
             {Array(20).fill(null).map((_, idx) => (
-              <span key={idx} className="marquee-item text-white text-2xl font-bold mx-8">
+              <span key={idx} className="marquee-item text-white text-lg sm:text-xl md:text-2xl font-bold mx-4 sm:mx-8">
                 ✦ EXPLORE OUR GALLERY ✦
               </span>
             ))}
@@ -321,7 +358,7 @@ function HomeContent({
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             style={{ willChange: "transform, opacity" }}
-            className="text-5xl md:text-6xl font-black text-center px-4 py-12 text-black uppercase tracking-tighter"
+            className="text-3xl sm:text-5xl md:text-6xl font-black text-center px-4 py-8 sm:py-12 text-black uppercase tracking-tighter"
           >
             Top Collections
           </motion.h2>
@@ -356,7 +393,7 @@ function HomeContent({
                   onClick={() => setSelectedTattoo(tattoo)}
                 >
                   <Image
-                    src={tattoo.image?.url || '/img/Chu A tach nen.png'}
+                    src={tattoo.image?.url || '/img/chu A do.png'}
                     alt={tattoo.name}
                     fill
                     className="object-cover group-hover:scale-110 transition duration-700 ease-in-out"
@@ -420,7 +457,7 @@ function HomeContent({
                   onClick={() => setSelectedTattoo(tattoo)}
                 >
                   <Image
-                    src={tattoo.image?.url || '/img/Chu A tach nen.png'}
+                    src={tattoo.image?.url || '/img/chu A do.png'}
                     alt={tattoo.name}
                     fill
                     className="object-cover group-hover:scale-110 transition duration-700 ease-in-out"
@@ -468,23 +505,34 @@ function HomeContent({
       {/* Booking Section */}
       <section ref={bookingRef} id="booking" className="relative min-h-screen w-full overflow-x-hidden bg-black/85 scroll-section flex items-center py-12 lg:py-0">
         {homepageData?.bookingVideo?.url ? (
-          <video
-            key={homepageData.bookingVideo.url}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
-            disableRemotePlayback
-            className="absolute inset-0 w-full h-full object-cover opacity-30"
-          >
-            <source src={homepageData.bookingVideo.url} type="video/mp4" />
-          </video>
+          homepageData.bookingVideo.mimeType?.includes('video') ? (
+            <video
+              key={homepageData.bookingVideo.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              poster={homepageData.welcomeImage?.url || '/img/Chu A tach nen.png'}
+              disableRemotePlayback
+              className="absolute inset-0 w-full h-full object-cover opacity-30"
+            >
+              <source src={homepageData.bookingVideo.url} type={homepageData.bookingVideo.mimeType} />
+            </video>
+          ) : (
+            <div className="absolute inset-0 w-full h-full">
+              <Image
+                src={homepageData.bookingVideo.url}
+                alt="Booking Background"
+                fill
+                className="object-cover opacity-30"
+              />
+            </div>
+          )
         ) : (
           <div className="absolute inset-0 w-full h-full bg-black flex items-center justify-center">
             <Image
-              src="/img/Chu A tach nen.png"
+              src="/img/chu A do.png"
               alt="Background"
               width={256}
               height={256}
@@ -535,7 +583,7 @@ function HomeContent({
       {/* Tattoo Zoom Modal */}
       {selectedTattoo && (
         <ImageZoomModal
-          imageUrl={selectedTattoo.image?.url || '/img/Chu A tach nen.png'}
+          imageUrl={selectedTattoo.image?.url || '/img/chu A do.png'}
           altText={selectedTattoo.name}
           isOpen={!!selectedTattoo}
           onClose={() => setSelectedTattoo(null)}

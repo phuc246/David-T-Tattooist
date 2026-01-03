@@ -24,17 +24,17 @@ export default function Navbar() {
     setMobileMenuOpen(false)
     const targetUrl = '/?scroll=booking'
 
-    // For local dev and different route handling, we check if we're already on home
     if (typeof window !== 'undefined') {
       if (window.location.pathname === '/') {
-        // If on home, we can use the router but might need to force a refresh of the param
-        router.push(targetUrl)
-        // If router.push doesn't trigger effect because it's same page, 
-        // the HomeClient's useSearchParams will catch it.
-      } else {
-        // From other pages, window.location.href is extremely reliable for triggering the new page mount + effect
-        window.location.href = targetUrl
+        // If already on homepage, just find the element and jump instantly
+        const bookingElement = document.getElementById('booking')
+        if (bookingElement) {
+          bookingElement.scrollIntoView({ behavior: 'auto', block: 'start' })
+          return
+        }
       }
+      // From other pages or if element not found, use traditional navigation
+      window.location.href = targetUrl
     }
   }
 
