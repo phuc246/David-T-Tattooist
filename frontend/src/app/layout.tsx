@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: 'A Little Ink | David T Tattooist',
     images: [
       {
-        url: '/img/firstlook.png',
+        url: 'https://david-t-tattooist.vercel.app/img/firstlook.png',
         width: 1200,
         height: 630,
         alt: 'A Little Ink - Tattoo Studio Preview',
