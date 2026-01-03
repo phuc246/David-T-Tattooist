@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     siteName: 'A Little Ink | David T Tattooist',
     images: [
       {
-        url: 'https://david-t-tattooist.vercel.app/img/Chu A tach nen.png',
+        url: 'https://david-t-tattooist.vercel.app/img/firstlook.png',
         width: 1200,
-        height: 1200,
-        alt: 'A Little Ink | David T Tattooist',
+        height: 630,
+        alt: 'A Little Ink | David T Tattooist - Tattoo Studio Preview',
       },
     ],
     locale: 'vi_VN',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'A Little Ink | David T Tattooist - Tiệm Xăm Quận 1 & Tattoo Studio Saigon',
     description: 'A Little Ink by David T Tattooist - Tiệm xăm Quận 1 chuyên nghiệp. Top-rated tattoo studio in Saigon, HCM. Chuyên xăm nghệ thuật, mini tattoo, xăm chân dung & đào tạo nghề.',
-    images: ['/img/firstlook.png'],
+    images: ['https://david-t-tattooist.vercel.app/img/firstlook.png'],
   },
 }
 
