@@ -64,7 +64,7 @@ export default function Footer({ id }: { id?: string }) {
           </div>
           <div className="text-center">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Address</h4>
-            <p className="text-xs">17 Mai Chi Tho, Ward An Khanh, Distric 2, Sai Gon</p>
+            <p className="text-xs">1/8 Pasteur, Nguyen Thai Binh Ward, Dist. 1, Sai Gon</p>
           </div>
           <div className="text-center">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Hours</h4>

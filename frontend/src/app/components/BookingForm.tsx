@@ -225,7 +225,7 @@ export default function BookingForm({ className = '' }: Props) {
               disabled={isSubmitting}
               className="w-full py-2.5 border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-black transition disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Sending...' : 'Register Now'}
+              {isSubmitting ? 'Sending...' : 'Send Now'}
             </button>
           </div>
         </form>
