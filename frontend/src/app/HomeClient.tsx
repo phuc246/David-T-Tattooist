@@ -71,33 +71,26 @@ function HomeContent({
   }, [])
 
   // Force play for Safari/mobile and handle loader timeout
+  // Optimize IntroLoader: Show content quickly (max 2.5s) instead of waiting for heavy video
   useEffect(() => {
-    if (homepageData?.heroVideo?.url) {
-      if (!homepageData.heroVideo.mimeType?.includes('video')) {
-        // If it's an image, ready immediately
-        setIsHeroVideoReady(true)
-      } else if (videoRef.current) {
-        const timer = setTimeout(() => {
-          videoRef.current?.play().catch(error => {
-            console.log("Autoplay was prevented:", error)
-          })
-        }, 100)
-
-        // Safety timeout: if video takes too long (e.g. 10s), show content anyway
-        const safetyTimer = setTimeout(() => {
-          setIsHeroVideoReady(true)
-        }, 10000)
-
-        return () => {
-          clearTimeout(timer)
-          clearTimeout(safetyTimer)
-        }
+    // If video is present, try to play it
+    if (homepageData?.heroVideo?.url && homepageData.heroVideo.mimeType?.includes('video') && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Autoplay prevented:", error)
+        });
       }
-    } else {
-      // No video/image data? ready immediately
-      setIsHeroVideoReady(true)
     }
-  }, [homepageData?.heroVideo?.url, homepageData?.heroVideo?.mimeType])
+
+    // Always reveal content after a short delay (2.5s max), regardless of video state
+    // This ensures the site feels "instant" even on slow 3G connections
+    const timer = setTimeout(() => {
+      setIsHeroVideoReady(true)
+    }, 2500)
+
+    return () => clearTimeout(timer)
+  }, [homepageData?.heroVideo?.url])
 
   // Animation Variants
   const fadeInUp = {
@@ -147,10 +140,11 @@ function HomeContent({
               muted
               playsInline
               preload="auto"
+              poster={homepageData.heroImage?.url || '/img/Chu A tach nen.png'} // Instant visual fallback
               onPlaying={() => setIsHeroVideoReady(true)}
               disableRemotePlayback
-              className="w-full h-full object-cover"
-              style={{ willChange: 'transform' }}
+              className="w-full h-full object-cover transition-opacity duration-1000"
+              style={{ willChange: 'transform', opacity: isHeroVideoReady ? 1 : 0 }} // Fade in when ready
             >
               <source src={homepageData.heroVideo.url} type={homepageData.heroVideo.mimeType} />
               Your browser does not support the video tag.
@@ -174,6 +168,7 @@ function HomeContent({
               className="opacity-50"
               width={256}
               height={256}
+              priority
               style={{ width: '16rem', height: 'auto' }}
             />
           </div>
@@ -193,6 +188,8 @@ function HomeContent({
             priority
             className="w-32 h-auto transition-all duration-1000"
             style={{
+              width: '8rem',
+              height: 'auto',
               transform: scrollY > 100
                 ? `translateY(${Math.min(scrollY - 100, (typeof window !== 'undefined' ? window.innerHeight : 800) * 0.4)}px) scale(${Math.max(0.3, 1 - (scrollY - 100) / 1000)})`
                 : 'none',
@@ -537,6 +534,7 @@ function HomeContent({
               width={256}
               height={256}
               className="w-64 h-auto opacity-20"
+              style={{ width: '16rem', height: 'auto' }}
             />
           </div>
         )}

@@ -70,7 +70,12 @@ export default function Navbar() {
 
             {/* Brand centered absolute */}
             <div className="brand-center pointer-events-none" id="nav-brand">
-              <Link href="/" className="brand-text pointer-events-auto font-bold text-2xl lg:text-3xl relative nav-brand-text">
+              <Link href="/" onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault()
+                  window.location.reload()
+                }
+              }} className="brand-text pointer-events-auto font-bold text-2xl lg:text-3xl relative nav-brand-text">
                 <span className="relative z-10 text-shimmer">A LITTLE INK</span>
                 <span
                   id="logo-mover"
@@ -80,10 +85,14 @@ export default function Navbar() {
                     transition: 'opacity 0.5s ease'
                   }}
                 >
-                  <img
+                  <Image
                     src="/img/Chu A tach nen.png"
                     alt="Logo"
+                    width={24}
+                    height={24}
                     className="h-6 w-auto"
+                    style={{ width: 'auto', height: 'auto' }}
+                    priority
                   />
                 </span>
               </Link>

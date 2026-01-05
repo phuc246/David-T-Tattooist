@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface ImageZoomModalProps {
     imageUrl: string
@@ -101,24 +102,25 @@ export default function ImageZoomModal({ imageUrl, altText, isOpen, onClose }: I
                 }}
                 onWheel={handleWheel}
             >
-                <img
+                <Image
                     src={imageUrl}
                     alt={altText}
+                    width={1920}
+                    height={1080}
+                    priority
                     className={`max-w-full max-h-full object-contain transition-transform duration-75 select-none ${zoomLevel > 1 ? 'cursor-grab active:cursor-grabbing' : ''
                         }`}
                     style={{
                         transform: `translate(${position.x}px, ${position.y}px) scale(${zoomLevel})`,
-                        cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default'
+                        cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+                        width: 'auto',
+                        height: 'auto'
                     }}
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleMouseLeave}
                     draggable={false}
-                    onError={(e) => {
-                        const img = e.target as HTMLImageElement
-                        img.src = '/img/chu A do.png'
-                    }}
                 />
             </div>
 

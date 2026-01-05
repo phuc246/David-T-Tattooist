@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image'
 
 type Artist = {
   id?: number
@@ -12,8 +13,14 @@ type Artist = {
 export default function CardArtist({ artist }: { artist: Artist }) {
   return (
     <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition">
-      <div className="h-[320px] bg-gray-100 flex items-center justify-center overflow-hidden">
-        <img src={artist.image} alt={artist.name} className="w-full h-full object-cover" onError={(e) => {(e.target as HTMLImageElement).style.display = 'none'}} />
+      <div className="h-[320px] bg-gray-100 relative overflow-hidden">
+        <Image
+          src={artist.image}
+          alt={artist.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 400px"
+        />
       </div>
       <div className="p-6 text-center">
         <h3 className="text-2xl font-bold mb-1 text-black">{artist.name}</h3>

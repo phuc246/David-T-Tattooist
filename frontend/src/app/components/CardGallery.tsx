@@ -1,4 +1,4 @@
-"use client"
+import Image from 'next/image'
 
 type Product = {
   _id?: string
@@ -16,11 +16,12 @@ export default function CardGallery({ product, onClick }: { product: Product; on
       onClick={onClick}
       className="relative group cursor-pointer overflow-hidden rounded-lg bg-gray-900 aspect-square"
     >
-      <img
+      <Image
         src={product.image}
         alt={product.name}
+        fill
         className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-        onError={(e) => { (e.target as HTMLImageElement).src = '/img/chu A do.png' }}
+        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
       />
       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-end">
         <div className="w-full p-3">

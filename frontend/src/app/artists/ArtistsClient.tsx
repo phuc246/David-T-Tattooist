@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Navbar from '../components/Navbar'
@@ -18,6 +18,19 @@ export default function ArtistsClient({ initialArtists, initialPageContent }: Ar
     const [selectedPortfolioImage, setSelectedPortfolioImage] = useState(0)
     const [fullscreenZoom, setFullscreenZoom] = useState(false)
     const [pageContent] = useState(initialPageContent)
+
+    // Handle initial hash scroll
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.location.hash) {
+            const id = window.location.hash.replace('#', '')
+            setTimeout(() => {
+                const element = document.getElementById(id)
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+            }, 500) // Delay to ensure image layout stability
+        }
+    }, [])
 
     return (
         <div className="min-h-screen bg-white text-black">
@@ -47,12 +60,19 @@ export default function ArtistsClient({ initialArtists, initialPageContent }: Ar
                     <h2 className="text-4xl font-bold text-black mb-16 text-center">Meet Our Team</h2>
                     <div className="flex flex-col gap-24">
                         {artists.map((artist: any, idx: number) => (
-                            <div key={idx}>
-                                <div id={`artist-${idx}`} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${idx % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
+                            <div key={artist.id || idx}>
+                                <div id={`artist-${artist.id}`} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${idx % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
                                     <div className={idx % 2 === 1 ? 'lg:col-start-2' : ''}>
                                         <div className="relative group">
-                                            <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 aspect-[4/5] shadow-lg">
-                                                <Image src={artist.image?.url || '/img/A.Tuan.jpg'} alt={artist.name} fill className="object-cover group-hover:scale-110 transition duration-500" sizes="(max-width: 1024px) 100vw, 50vw" />
+                                            <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 h-[600px] lg:h-[80vh] max-h-[850px] shadow-lg">
+                                                <Image
+                                                    src={artist.image?.url || '/img/A.Tuan.jpg'}
+                                                    alt={artist.name}
+                                                    fill
+                                                    className="object-cover group-hover:scale-110 transition duration-500"
+                                                    sizes="(max-width: 1024px) 100vw, 50vw"
+                                                    priority={idx === 0}
+                                                />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                                             </div>
                                             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white shadow-lg px-6 py-3 rounded-lg border-2 border-gray-200"><span className="text-black font-semibold">{artist.experience}</span></div>
@@ -107,13 +127,20 @@ export default function ArtistsClient({ initialArtists, initialPageContent }: Ar
                             </div>
                             <div className="flex-1 flex flex-col md:flex-row gap-4 overflow-hidden">
                                 <div className="flex-1 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden relative">
-                                    <img src={artists[portfolioModal].portfolio?.[selectedPortfolioImage]?.url || artists[portfolioModal].portfolio?.[selectedPortfolioImage] || '/img/chu A do.png'} alt="Portfolio" className="max-w-full max-h-full object-contain cursor-zoom-in" onClick={() => setFullscreenZoom(true)} />
+                                    <Image
+                                        src={artists[portfolioModal].portfolio?.[selectedPortfolioImage]?.url || artists[portfolioModal].portfolio?.[selectedPortfolioImage] || '/img/chu A do.png'}
+                                        alt="Portfolio"
+                                        fill
+                                        className="object-contain cursor-zoom-in"
+                                        onClick={() => setFullscreenZoom(true)}
+                                        sizes="(max-width: 1280px) 100vw, 1280px"
+                                    />
                                 </div>
                                 <div className="hidden md:block w-32 lg:w-40 flex-shrink-0 overflow-y-auto">
                                     <div className="grid grid-cols-1 gap-3">
                                         {artists[portfolioModal].portfolio?.map((img: any, imgIdx: number) => (
-                                            <button key={imgIdx} onClick={() => setSelectedPortfolioImage(imgIdx)} className={`aspect-square rounded-lg overflow-hidden border-2 transition ${selectedPortfolioImage === imgIdx ? 'border-black ring-2 ring-black/50' : 'border-gray-300'}`}>
-                                                <img src={img.url || img} alt="Thumbnail" className="w-full h-full object-cover" />
+                                            <button key={imgIdx} onClick={() => setSelectedPortfolioImage(imgIdx)} className={`aspect-square rounded-lg overflow-hidden border-2 transition relative ${selectedPortfolioImage === imgIdx ? 'border-black ring-2 ring-black/50' : 'border-gray-300'}`}>
+                                                <Image src={img.url || img} alt="Thumbnail" fill className="object-cover" sizes="160px" />
                                             </button>
                                         ))}
                                     </div>

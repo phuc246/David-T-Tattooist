@@ -35,7 +35,15 @@ export default function BlogClient({ initialPosts, initialPageContent }: BlogCli
                         </video>
                     ) : (
                         <div className="w-full h-full bg-black flex items-center justify-center">
-                            <Image src="/img/Chu A tach nen.png" alt="Hero" width={256} height={256} className="opacity-20" />
+                            <Image
+                                src="/img/Chu A tach nen.png"
+                                alt="Hero"
+                                width={256}
+                                height={256}
+                                priority
+                                className="opacity-20"
+                                style={{ width: '16rem', height: 'auto' }}
+                            />
                         </div>
                     )}
                     <div className="absolute inset-0 bg-black/10"></div>

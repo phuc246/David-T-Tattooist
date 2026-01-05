@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa'
 import { SiZalo } from 'react-icons/si'
 
@@ -24,9 +25,16 @@ export default function Footer({ id }: { id?: string }) {
 
           {/* Logo (center) */}
           <div className="flex items-center justify-center">
-            <div className="text-center">
-              <img src="/img/Logo tách nền full-A-chữ-22.png" alt="A Little Ink Logo" className="h-28 w-auto mx-auto mb-2" />
-              <p className="text-sm text-gray-500">Professional tattoo studio with world-class artists.</p>
+            <div className="text-center group cursor-pointer transition-transform duration-300 hover:scale-110">
+              <Image
+                src="/img/Logo tách nền full-A-chữ-22.png"
+                alt="A Little Ink Logo"
+                width={112}
+                height={112}
+                className="h-28 w-auto mx-auto mb-2 drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all duration-300"
+                style={{ height: 'auto' }}
+              />
+              <p className="text-sm text-gray-500 group-hover:text-gray-300 transition-colors duration-300">Professional tattoo studio with world-class artists.</p>
             </div>
           </div>
 
@@ -54,21 +62,21 @@ export default function Footer({ id }: { id?: string }) {
 
         {/* Info Row: Email - Phone - Address - Hours (all in one horizontal line) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-          <div className="text-center">
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Email</h4>
-            <p className="text-xs">alittleink.skin@gmail.com</p>
+          <div className="text-center hover:translate-y-[-2px] transition-transform duration-300 group">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1 group-hover:text-gray-300">Email</h4>
+            <p className="text-xs group-hover:text-white transition-colors">alittleink.skin@gmail.com</p>
           </div>
-          <div className="text-center">
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Phone</h4>
-            <p className="text-xs">+84 36 809 8894</p>
+          <div className="text-center hover:translate-y-[-2px] transition-transform duration-300 group">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1 group-hover:text-gray-300">Phone</h4>
+            <p className="text-xs group-hover:text-white transition-colors">+84 36 809 8894</p>
           </div>
-          <div className="text-center">
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Address</h4>
-            <p className="text-xs">1/8 Pasteur, Nguyen Thai Binh Ward, Dist. 1, Sai Gon</p>
+          <div className="text-center hover:translate-y-[-2px] transition-transform duration-300 group">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1 group-hover:text-gray-300">Address</h4>
+            <p className="text-xs group-hover:text-white transition-colors">1/8 Pasteur, Nguyen Thai Binh Ward, Dist. 1, Sai Gon</p>
           </div>
-          <div className="text-center">
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1">Hours</h4>
-            <p className="text-xs">Open: 10:00 AM - Close: 7:00 PM</p>
+          <div className="text-center hover:translate-y-[-2px] transition-transform duration-300 group">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-1 group-hover:text-gray-300">Hours</h4>
+            <p className="text-xs group-hover:text-white transition-colors">Open: 10:00 AM - Close: 7:00 PM</p>
           </div>
         </div>
 

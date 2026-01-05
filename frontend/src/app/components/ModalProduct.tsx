@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { FaInstagram } from 'react-icons/fa'
 import ImageZoomModal from './ImageZoomModal'
 
@@ -61,11 +62,13 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
                 className="relative rounded-lg overflow-hidden cursor-zoom-in"
                 onClick={() => setIsZoomOpen(true)}
               >
-                <img
+                <Image
                   src={imgs[selected]}
                   alt={product.name}
+                  width={800}
+                  height={800}
                   className="w-full h-auto object-contain max-h-[70vh] mx-auto"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/img/chu A do.png' }}
+                  style={{ width: '100%', height: 'auto' }}
                 />
               </div>
 
@@ -81,12 +84,15 @@ export default function ModalProduct({ product, onClose }: { product: Product | 
                         : 'border-gray-300 hover:border-black'
                         }`}
                     >
-                      <img
-                        src={img}
-                        alt={`thumb-${idx}`}
-                        className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).src = '/img/chu A do.png' }}
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={img}
+                          alt={`thumb-${idx}`}
+                          fill
+                          className="object-cover"
+                          sizes="120px"
+                        />
+                      </div>
                     </button>
                   ))}
                 </div>

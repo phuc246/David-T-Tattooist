@@ -34,8 +34,8 @@ export default function IntroLoader({ isLoading }: IntroLoaderProps) {
         }
 
         if (!isLoading) {
-            // Small delay before fading out the loader
-            const timer = setTimeout(() => setShow(false), 800)
+            // Small delay before fading out the loader (sync with rocket launch)
+            const timer = setTimeout(() => setShow(false), 500)
             return () => {
                 clearTimeout(timer)
             }
@@ -53,7 +53,7 @@ export default function IntroLoader({ isLoading }: IntroLoaderProps) {
             {show && (
                 <motion.div
                     initial={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 1, ease: "easeInOut" } }}
+                    exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
                     className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center overflow-hidden"
                 >
                     {/* Background Stars/Particles */}
@@ -107,6 +107,7 @@ export default function IntroLoader({ isLoading }: IntroLoaderProps) {
                                 alt="Logo"
                                 width={120}
                                 height={120}
+                                priority
                                 className="drop-shadow-[0_0_20px_rgba(255,255,255,0.9)]"
                                 style={{ width: '6rem', height: 'auto' }}
                             />
