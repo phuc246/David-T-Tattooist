@@ -277,7 +277,7 @@ export default function GalleryClient({ initialProducts, initialPageContent }: G
             </section>
 
             {/* Collections Section */}
-            <section className="w-full overflow-x-hidden bg-white py-0 px-0 pb-20 relative">
+            <section id="collections" className="w-full overflow-x-hidden bg-white py-0 px-0 pb-20 relative">
                 <div className="w-full px-4 sm:px-6 lg:px-8">
                     <h1 className="text-5xl font-bold mb-8 text-center text-black py-2 mt-8">Collections</h1>
                     <div className="flex flex-wrap justify-center gap-4 mb-12">

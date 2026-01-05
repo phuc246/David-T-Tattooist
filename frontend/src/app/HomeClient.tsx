@@ -493,7 +493,7 @@ function HomeContent({
 
           <div className="text-center mt-0 px-4">
             <Link
-              href="/gallery"
+              href="/gallery#collections"
               className="px-8 py-3 border-2 border-black text-black hover:bg-black hover:text-white rounded-lg font-semibold transition inline-block"
             >
               View All Designs
